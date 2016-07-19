@@ -1,0 +1,29 @@
+<section>
+	<div class="container">
+		<div class="page-header row">
+		    <div style="text-align:center">
+		      <h1>Hello {{(user | async)?.fName }} {{(user | async)?.lName }}!</h1>
+		    </div>
+		</div>
+		<div>
+			<h2>Account Information:</h2><br>
+			<p><label>First Name:</label> {{(user | async)?.fName }}
+				<button type="button"class="btn btn-sm btn-default"aria-label="Right Align">
+					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+          		</button>
+          	<p><hr>
+			<p><label>Last Name:</label> {{(user | async)?.lName }}
+				<button type="button"class="btn btn-sm btn-default"aria-label="Right Align" >
+					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+          		</button>
+			<p><hr>
+			<p><label>Email:</label> {{(user | async)?.email}}
+				<button type="button"class="btn btn-sm btn-default"aria-label="Right Align">
+					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+          		</button>
+			<p><hr>
+			<h2>Integrations:</h2><br>
+			<img src="./logos/box_logo.png"><img src="./logos/outlook_logo.png">
+		</div>
+	</div>
+</section>

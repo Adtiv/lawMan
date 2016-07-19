@@ -1,0 +1,27 @@
+.navbar{
+	font-family: "PT Serif", Times, serif;
+	font-size:16px;
+	background-color: rgba(230,230,230,.9);
+	border-bottom: 2px solid rgb(150,150,150);
+}
+a{
+	color:rgb(20,20,20);
+}
+.modal-header{
+	background-color: rgba(0,0,255,.5);
+}
+.modal-body{
+	padding:15%;
+	background-color: rgba(0,0,255,.2);
+}
+.modal-header{
+	text-align: center;
+}
+#signUp{
+	visibility: hidden;
+	display: none;
+}
+#signUp-title{
+	visibility: hidden;
+	display: none;
+}

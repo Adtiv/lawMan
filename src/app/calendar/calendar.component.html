@@ -1,0 +1,70 @@
+<section>
+	<div class="container">
+		<div class="page-header row">
+		    <div class="col-sm-6">
+		      <h1 class="sectionTitle">Calendar</h1>
+		    </div>
+		    <br>
+		    <div class="col-sm-6">
+		      <div style="float:right;"><em class="text-muted">Add Event:</em></div><br>
+		      <button type="button"class="btn btn-default" style="float:right;"aria-label="Right Align" (click)="openEvents()">
+		        <span class="glyphicon glyphicon-plus" *ngIf="isCollapsed"aria-hidden="true"></span>
+		        <span class="glyphicon glyphicon-minus"*ngIf="!isCollapsed"aria-hidden="true"></span>
+		      </button>
+		    </div>
+		</div>
+		<div [collapse]="isCollapsed">
+		  <div class="page-header row" style="padding-right:5%;padding-left:5%;">
+		    <h1 style="text-align:center;">New Event:</h1>
+		  </div>
+		  <div class="container">
+		    <form class="form-horizontal" (ngSubmit)="addEvent()">
+		      <fieldset>
+		        <div class="form-group" show-errors><br>
+		          <label class="control-label" for="Title">Title:</label>
+		          <input type="text"  name="title"id="name" class="form-control" placeholder="Title" [(ngModel)]="title"required><br>
+			          <label class="control-label" for="description">Start:</label>
+	            	  <p-calendar name="start"[(ngModel)]="startDate"showAnim="slideDown"[showIcon]="true"></p-calendar><br>
+	            	  <label class="control-label">End:</label>
+	            	  <p-calendar name="end"[(ngModel)]="endDate"[showIcon]="true" showAnim="slideDown">{{endDate}}</p-calendar>
+	    		</div>
+		        <div class="form-group" style="text-align:center;">
+		          <button type="submit" class="btn btn-primary">Create</button>
+		        </div>
+		        <div class="text-danger">
+		          <strong></strong>
+		        </div>
+		      </fieldset>
+		    </form>
+		  </div><hr>
+		</div>
+		<p-schedule [events]="events |async" [header]="header" [eventLimit]="4" [editable]="true"
+            (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)"></p-schedule>
+		<p-dialog header="Event Details" [(visible)]="dialogVisible" [responsive]="true" showEffect="fade" [modal]="false">
+		    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="event">
+		        <div class="ui-grid-row">
+		            <div class="ui-grid-col-4"><label for="vin">Title</label></div>
+		            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="event.title" /></div>
+		        </div>
+		        <div class="ui-grid-row">
+		            <div class="ui-grid-col-4"><label for="start">Start</label></div>
+		            <div class="ui-grid-col-8"><p-calendar id="start" dateFormat="yy-mm-dd" [(ngModel)]="event.start"></p-calendar></div>
+		        </div>
+		        <div class="ui-grid-row">
+		            <div class="ui-grid-col-4"><label for="end">End</label></div>
+		            <div class="ui-grid-col-8"><p-calendar id="end" dateFormat="yy-mm-dd" [(ngModel)]="event.end" defaultDate="2016-01-01" placeholder="Optional"></p-calendar></div>
+		        </div>
+		        <div class="ui-grid-row">
+		            <div class="ui-grid-col-4"><label for="allday">All Day</label></div>
+		            <div class="ui-grid-col-8"><p-toggleButton [(ngModel)]="event.allDay" style="width:150px" onLabel="Yes" offLabel="No"></p-toggleButton></div>
+		        </div>
+		    </div>
+		    <footer>
+		        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		            <button type="button" pButton icon="fa-close" (click)="deleteEvent()" label="Delete"></button>
+		            <button type="button" pButton icon="fa-check" (click)="saveEvent()" label="Save"></button>
+		        </div>
+		    </footer>
+		</p-dialog>
+	</div>
+</section>

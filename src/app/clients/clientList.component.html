@@ -1,0 +1,112 @@
+<section>
+	<div class="container">
+	  <Add-Client></Add-Client>
+	  <div id="editClient"[collapse]="edit">
+        <div style="float:left"><a (click)="closeEdit()"><span class="glyphicon glyphicon-remove close" aria-hidden="true"></span></a>
+        </div>
+          <div class="page-header row" style="padding-right:5%;padding-left:5%;">
+            <h1 style="text-align:center;">Edit Client:</h1>
+          </div>
+          <div class="container">
+            <form class="form-horizontal" (ngSubmit)="updateClient()">
+             <fieldset>
+		        <div class="form-group clientInput" show-errors>
+		          <label class="control-label" for="Name">Name:</label>
+		          <input type="text"name="name"id="name" class="form-control" placeholder="Name" [(ngModel)]="name"required>
+		          <label class="control-label" for="description">Email:</label>
+		          <input type="text"name="email"id="email" class="form-control" placeholder="Email" [(ngModel)]="email"required>
+		          <label class="control-label" for="phoneNumber">Phone Number(main):</label>
+		          <input type="text"name="phoneNumber"id="phoneNumber" class="form-control" placeholder="Phone Number" [(ngModel)]="phoneNumber"required>
+		          <label class="control-label" for="phoneNumber">Phone Number(alternate):</label>
+		          <input type="text"name="phoneNumber"id="phoneNumber" class="form-control" placeholder="Phone Number" [(ngModel)]="phoneNumber"required>
+		          <label class="control-label" for="address">Address:</label>
+		          <input type="text"name="address"id="address" class="form-control" placeholder="Address" [(ngModel)]="address"required>
+		        </div>
+		        <div class="form-group" style="text-align:center;">
+		          <button type="submit" class="btn btn-primary">Update</button>
+		        </div>
+		        <div class="text-danger">
+		          <strong></strong>
+		        </div>
+		      </fieldset>
+            </form>
+          </div><hr>
+      </div>
+	  <div>
+	  	<div class="col-md-4 col-md-offset-4">
+            <form action="" class="search-form">
+                <div class="form-group has-feedback">
+            		<label for="search" class="sr-only">Search</label>
+            		<input type="text" class="form-control" name="search" id="search" placeholder="search"([ngModel])="searchClient" (keyup)="onKey($event)">
+              		<span class="glyphicon glyphicon-search form-control-feedback"></span>
+            	</div>
+            </form>
+        </div>
+	  </div>
+	  <br><br><hr>
+		<div class="list-group" *ngIf="searchClient==''">
+		  <a href="#" (click)="activeClient(client)"*ngFor= "let client of clients | async" class="list-group-item"><h4 class="list-group-item-heading">{{client.name}}</h4>
+		  <small class="list-group-item-text">
+	        <span style="float:right;">{{client.email}}</span>
+	      </small>
+			<span>{{client.phoneNumber}}</span>
+			<div id="clientDetail"[collapse]="clientDetail(client)">
+		        <hr>
+		        <p><b>Alt. Number:</b> {{client.phoneNumber}}<p>
+		        <p><b>Address:</b> {{client.address}}<p>
+		        <p><b>Documents:</b> <p>
+		        <p><b>Tasks:</b>
+		        	<ul>
+			            <li *ngFor="let clientTask of clientTasks | async"style="margin-bottom:20px;">
+			              {{clientTask.task}}<span class="glyphicon glyphicon-ok"style="float:right;border:1px solid rgb(100,100,100)"[style.color]="getStyle(clientTask)"></span><br>
+			              <span style="float:right"><i>-<b>{{clientTask.days}}</b> days</i></span>
+			            </li>
+			        </ul>
+		        <p>
+		        <div style="padding-bottom:5%;padding-top:2%;">
+		          <span style="float:right"><i>Delete</i></span>
+		          <span style="float:left"><i>Edit</i></span><br>
+		          <button type="button"class="btn btn-danger" style="float:right;"aria-label="Right Align" (click)="deleteClient(client)">
+		            <span class="glyphicon glyphicon-remove icon-success" aria-hidden="true"></span>
+		          </button>
+		          <button type="button"class="btn btn-info" style="float:left;"aria-label="Right Align" (click)="editToggle(client,false)">
+		            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+		          </button>
+		        </div>
+		      </div>
+		</a>
+		</div>
+		<div class="list-group" *ngIf="searchClient!=''">
+		  <a href="#" (click)="activeLocalClient(client)"*ngFor= "let client of clientList | search: searchClient" class="list-group-item"><h4 class="list-group-item-heading">{{client.name}}</h4>
+		  <small class="list-group-item-text">
+	        <span style="float:right;">{{client.email}}</span>
+	      </small>
+			<span>{{client.phoneNumber}}</span>
+			<div id="clientDetail"[collapse]="localClientDetail(client)">
+		        <hr>
+		        <p><b>Alt. Number:</b> {{client.phoneNumber}}<p>
+		        <p><b>Address:</b> {{client.address}}<p>
+		        <p><b>Documents:</b> <p>
+		        <p><b>Tasks:</b>
+		        	<ul>
+			            <li *ngFor="let clientTask of clientTasks | async"style="margin-bottom:20px;">
+			              {{clientTask.task}}<span class="glyphicon glyphicon-ok"style="float:right;border:1px solid rgb(100,100,100)"[style.color]="getStyle(clientTask)"></span><br>
+			              <span style="float:right"><i>-<b>{{clientTask.days}}</b> days</i></span>
+			            </li>
+			        </ul>
+		        <p>
+		        <div style="padding-bottom:5%;padding-top:2%;">
+		          <span style="float:right"><i>Delete</i></span>
+		          <span style="float:left"><i>Edit</i></span><br>
+		          <button type="button"class="btn btn-danger" style="float:right;"aria-label="Right Align" (click)="deleteLocalClient(client.key)">
+		            <span class="glyphicon glyphicon-remove icon-success" aria-hidden="true"></span>
+		          </button>
+		          <button type="button"class="btn btn-info" style="float:left;"aria-label="Right Align" (click)="editToggle(client,true)">
+		            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+		          </button>
+		        </div>
+		      </div>
+		</a>
+		</div>
+	</div>
+</section>
