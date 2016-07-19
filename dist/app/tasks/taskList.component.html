@@ -1,0 +1,102 @@
+<section>
+  <div class="container">
+    <Add-Task></Add-Task>
+      <div id="editTask"[collapse]="edit">
+        <div style="float:left"><a (click)="closeEdit()"><span class="glyphicon glyphicon-remove close" aria-hidden="true"></span></a>
+        </div>
+          <div class="page-header row" style="padding-right:5%;padding-left:5%;">
+            <h1 style="text-align:center;">Edit Task:</h1>
+          </div>
+          <div class="container">
+            <form class="form-horizontal" (ngSubmit)="updateTask()">
+              <fieldset>
+                <div class="form-group taskInput" show-errors>
+                  <label class="control-label" for="title">Title:</label>
+                  <input type="text"name="title"id="taskTitle" class="form-control" placeholder="Title" [(ngModel)]="title"required>
+                  <label class="control-label" for="description">Description:</label>
+                  <input type="text"name="description"id="taskDescription" class="form-control" placeholder="Description" [(ngModel)]="description"required>
+                  <label class="control-label" for="taskType">Task Type:</label>
+                  <select class="form-control" id="taskType"required
+                    [(ngModel)]="taskType"
+                      name="taskType">
+                    <option *ngFor="let t of types" [value]="t">{{t}}</option>
+                  </select>
+                  <label class="control-label" for="client">Clients:</label>
+                  <select class="form-control"
+                    [(ngModel)]="client"
+                      name="client">
+                    <option *ngFor="let client of clients | async" [value]="client.name+'//'+client.$key">{{client.name}}</option>
+                  </select><br>
+                  <label class="control-label" for="dueDate">Due Date:</label>
+                  <p-calendar name="start"[(ngModel)]="date"dateFormat="mm/dd/yy"showAnim="slideDown"[showIcon]="true"></p-calendar>
+                </div>
+                <div class="form-group" id="submitTask">
+                  <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+                <div class="text-danger">
+                  <strong></strong>
+                </div>
+              </fieldset>
+            </form>
+          </div><hr>
+      </div>
+  	<div class="list-group">
+      <div id="drop">
+        <div class="btn-group" dropdown [(isOpen)]="status.isopen">
+          <button id="single-button" type="button" class="btn btn-default" dropdownToggle [disabled]="disabled">
+            {{filterButtonText}} <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+            <li role="menuitem"><a class="dropdown-item" href="#" (click)='filterTasks("none")'>All Tasks</a></li>
+            <li class="divider dropdown-divider"></li> 
+            <li role="menuitem"><a class="dropdown-item" href="#" (click)='filterTasks("motion")'>Motion Responses</a></li>
+            <li class="divider dropdown-divider"></li>
+            <li role="menuitem"><a class="dropdown-item" href="#" (click)='filterTasks("discovery")'>Discovery Responses</a></li>
+            <li class="divider dropdown-divider"></li>
+            <li role="menuitem"><a class="dropdown-item" href="#" (click)='filterTasks("pleading")'>Pleading Responses</a></li>
+            <li class="divider dropdown-divider"></li>
+            <li role="menuitem"><a class="dropdown-item" href="#" (click)='filterTasks("mediation")'>Mediation Statements</a></li>
+            <li class="divider dropdown-divider"></li>
+            <li role="menuitem"><a class="dropdown-item" href="#" (click)='filterTasks("other")'>Other</a></li>
+          </ul>
+        </div><br><br>
+        <div class="btn-group">
+          <label class="btn" id="urgent"(click)='filterByColor("red")' btnRadio="Left"
+                 uncheckable>Urgent</label>
+          <label class="btn" id="upcoming" (click)='filterByColor("yellow")' btnRadio="Middle"
+                 uncheckable>Upcoming</label>
+          <label class="btn" (click)='filterByColor("green")' btnRadio="Mid"
+                 uncheckable id="future">Future</label>
+          <label class="btn" id="all"(click)='filterByColor("none")' btnRadio="Right"
+                 uncheckable>All</label>
+        </div>
+      </div>
+      <hr>
+  	  <a href="#" *ngFor= "let task of tasks | async" class="list-group-item"[style.background-color]="getStyle(task)" (click)="activeTask(task)"><h4 class="list-group-item-heading">{{task.title}}</h4>
+  	  <small class="list-group-item-text">
+          <span style="float:right;">{{task.daysTillDue}} days</span>
+        </small>
+  		<span>{{task.taskType}}</span>
+      <div id="taskDetail"[collapse]="taskDetail(task)">
+        <hr>
+        <p><b>Description:</b> {{task.description}}<p>
+        <p><b>Due Date:</b> {{task.dueDate}}<p>
+        <p><b>Clients:</b>
+            <span *ngFor="let taskClient of taskClients | async">
+              {{taskClient.client}}
+            </span>
+        <p>
+        <div style="padding-bottom:5%;padding-top:2%;">
+          <span style="float:right"><i>Delete</i></span>
+          <span style="float:left"><i>Edit</i></span><br>
+          <button type="button"class="btn btn-default" style="float:right;"aria-label="Right Align" (click)="deleteTask(task)">
+            <span class="glyphicon glyphicon-remove icon-success" aria-hidden="true"></span>
+          </button>
+          <button type="button"class="btn btn-info" style="float:left;"aria-label="Right Align" (click)="editToggle(task)">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div></a>
+  	</div>
+  </div>
+</section>

@@ -1,0 +1,75 @@
+<div class="page-header row">
+    <div class="col-sm-6">
+      <h1 class="sectionTitle">Tasks</h1>
+    </div>
+    <br>
+    <div class="col-sm-6">
+      <div style="float:right;"><em class="text-muted">Add Task:</em></div><br>
+      <button type="button"*ngIf="isCollapsed==true"class="btn btn-default" id="plus"style="float:right;"aria-label="Right Align" (click)="openTasks()">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+      </button>
+      <button type="button"*ngIf="isCollapsed==false"class="btn btn-default" id="minus"style="float:right"aria-label="Right Align" (click)="openTasks()">
+        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+      </button>
+    </div>
+</div>
+<div [collapse]="isCollapsed">
+  <div class="page-header row" style="padding-right:5%;padding-left:5%;">
+    <h1 style="text-align:center;">New Task:</h1>
+  </div>
+  <div class="container">
+    <form class="form-horizontal" (ngSubmit)="addTask(client)">
+      <fieldset>
+        <div class="form-group taskInput" show-errors>
+          <label class="control-label" for="title">Title:</label>
+          <input type="text"name="title"id="taskTitle" class="form-control" placeholder="Title" [(ngModel)]="title"required>
+          <label class="control-label" for="description">Description:</label>
+          <input type="text"  name="description"id="taskDescription" class="form-control" placeholder="Description" [(ngModel)]="description"required>
+          <label class="control-label" for="taskType">Task Type:</label>
+          <select class="form-control" id="taskType"required
+            [(ngModel)]="taskType"
+              name="taskType">
+            <option *ngFor="let t of types" [value]="t">{{t}}</option>
+          </select>
+          <label class="control-label" for="client">Client:</label>
+          <select class="form-control"
+            [(ngModel)]="client"
+              name="client">
+            <option *ngFor="let client of clients | async" [value]="client.name+'//'+client.$key">{{client.name}}</option>
+          </select><br>
+          <label class="control-label" for="dueDate">Due Date:</label>
+          <p-calendar name="start"[(ngModel)]="date"dateFormat="mm/dd/yy"showAnim="slideDown"[showIcon]="true"></p-calendar>
+          <!--
+          <label class="control-label" for="dueDate">Due Date:</label>
+          <div class="inner-addon right-addon">
+          	<i class ="glyphicon glyphicon-calendar"></i>
+          	<input type="button" name="date"id="taskDueDate" class="form-control" placeholder="Due Date" [(ngModel)]="date" (click)="lgModal.show()" required>
+		      </div>
+    			<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    			  <div class="modal-dialog modal-lg">
+    			    <div class="modal-content">
+    			      <div class="modal-header">
+    			        <button type="button" class="close" (click)="lgModal.hide()" aria-label="Close">
+    			          <span aria-hidden="true">&times;</span>
+    			        </button>
+    			        <h4 class="modal-title">Choose Date</h4>
+    			      </div>
+    			      <div class="modal-body">
+    		        	<pre class="card card-block card-header">Selected date is: <em *ngIf="date">{{ getDate() | date:'shortDate'}}</em></pre>
+    		        	<datepicker name="dueDate" [(ngModel)]="date" showWeeks="true"></datepicker>
+    			      </div>
+    			    </div>
+    			   </div>
+    			 </div>
+          -->
+      </div>
+        <div class="form-group" id="submitTask">
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+        <div class="text-danger">
+          <strong></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div><hr>
+</div>
