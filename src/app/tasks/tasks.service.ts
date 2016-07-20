@@ -202,7 +202,11 @@ export class TasksService implements OnInit{
       }
       this.filteredTask=this.af.database.object('tasks/'+taskType+'/'+this.userService.uid+'/'+taskKey);        
       this.filteredTask.update({uid:this.userService.uid,title:title,description:description,dueDate:dueDate,taskType:taskType,daysTillDue:daysTillDue});
-      //console.log(taskKey + title + description + dueDate + taskType + daysTillDue);
+      this.af.database.list('taskClients/'+taskKey).subscribe(snapshots => {
+        snapshots.forEach(snapshot => {
+          this.af.database.object('clientTasks/'+snapshot.$key+'/'+taskKey).update({task:title});
+        }); 
+      })
     }
     deleteTask(taskKey,taskType){
       this.tasks=this.af.database.list('tasks/'+this.userService.uid);

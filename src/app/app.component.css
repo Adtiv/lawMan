@@ -4,6 +4,9 @@
 	background-color: rgba(230,230,230,.9);
 	border-bottom: 2px solid rgb(150,150,150);
 }
+.navbar-default .navbar-nav > li > a {
+   color: rgb(50,50,50); /*Change active text color here*/
+ }
 a{
 	color:rgb(20,20,20);
 }

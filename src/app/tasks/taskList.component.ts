@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFire, FirebaseListObservable,FirebaseAuth } from 'angularfire2';
+import { AngularFire, FirebaseListObservable,FirebaseObjectObservable,FirebaseAuth } from 'angularfire2';
 import { CORE_DIRECTIVES } from '@angular/common';
 import {Task} from './task';
 import {AddTaskComponent} from './addTask.component';
@@ -23,7 +23,8 @@ export class TaskListComponent implements OnInit {
   	tasks: FirebaseListObservable<any[]>;
   	taskClients: FirebaseListObservable<any[]>;
 	clients;
-	client;  	
+	client:FirebaseObjectObservable<any>;  	
+	editClient:FirebaseObjectObservable<any>;
   	public isCollapsed:boolean;
   	taskKey;
   	public status:{isopen:boolean} = {isopen: false};
@@ -48,7 +49,7 @@ export class TaskListComponent implements OnInit {
 	}
 	ngOnInit() {
 		this.isCollapsed = true;
-		this.client="";
+		//this.client="";
 		this.edit=true;
   	    this.filterButtonText="All Tasks";
   	    this.auth.subscribe((data)=>{
@@ -102,6 +103,7 @@ export class TaskListComponent implements OnInit {
 	updateTask(){
 	    var curr = new Date();
 	    var due = this.taskService.parseDateISO(this.date);
+	    console.log(due);
 	    var currentDate=moment(curr).startOf('day');
 	    var futureDate =moment(due).startOf('day');
 	    var differenceInDays = futureDate.diff(currentDate, 'days');
@@ -132,14 +134,28 @@ export class TaskListComponent implements OnInit {
 		this.updatedTaskKey=task.$key;
 		this.title=task.title;
 		this.description=task.description;
+		var hasClients=undefined;
+		var hClients;
+		this.af.database.list('taskClients/'+this.updatedTaskKey).subscribe(snap=>{
+			hClients=snap;
+		});
+		if(hClients=""){
+			console.log("true");
+		}
+		console.log("alskdjf"+hClients);
+		if(hasClients!=undefined){
 		  this.af.database.list('taskClients/'+this.updatedTaskKey).subscribe(snapshots => {
 	        snapshots.forEach(snapshot => {
+			  console.log(snapshot.$key);	        	
 	          this.client = this.af.database.object('clients/'+this.userService.uid+'/'+snapshot.$key);
-	          console.log(this.client.name);
 	        }); 
 	      })
-	      console.log(this.client.name);
-		this.date=new Date(task.dueDate);
+		  this.client.subscribe((editClient)=>{
+    	  })
+		}
+	    //console.log(this.client)
+		this.date=new Date(task.dueDate).toISOString().substring(0,10);
+		this.date=this.date.substring(5,7)+'/'+this.date.substring(8,10)+'/'+this.date.substring(0,4);
 		this.taskType=task.taskType;
 		this.oldType=task.taskType;
 		document.body.scrollTop = document.documentElement.scrollTop = 0;
