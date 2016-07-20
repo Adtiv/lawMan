@@ -59,7 +59,7 @@
 		        	<ul>
 			            <li *ngFor="let clientTask of clientTasks | async"style="margin-bottom:20px;">
 			              {{clientTask.task}}<span class="glyphicon glyphicon-ok"style="float:right;border:1px solid rgb(100,100,100)"[style.color]="getStyle(clientTask)"></span><br>
-			              <span style="float:right"><i>-<b>{{clientTask.days}}</b> days</i></span>
+			              <span style="float:right"><i><b>{{clientTask.days}}</b> days</i></span>
 			            </li>
 			        </ul>
 		        <p>
@@ -91,7 +91,7 @@
 		        	<ul>
 			            <li *ngFor="let clientTask of clientTasks | async"style="margin-bottom:20px;">
 			              {{clientTask.task}}<span class="glyphicon glyphicon-ok"style="float:right;border:1px solid rgb(100,100,100)"[style.color]="getStyle(clientTask)"></span><br>
-			              <span style="float:right"><i>-<b>{{clientTask.days}}</b> days</i></span>
+			              <span style="float:right"><i><b>{{clientTask.days}}</b> days</i></span>
 			            </li>
 			        </ul>
 		        <p>

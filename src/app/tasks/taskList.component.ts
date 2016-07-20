@@ -5,7 +5,7 @@ import {Task} from './task';
 import {AddTaskComponent} from './addTask.component';
 import {TasksService} from './tasks.service';
 import {UserService} from '../user/user.service';
-import {BS_VIEW_PROVIDERS,CollapseDirective, DROPDOWN_DIRECTIVES, BUTTON_DIRECTIVES,MODAL_DIRECTVES,DATEPICKER_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
+import {BS_VIEW_PROVIDERS,CollapseDirective, DROPDOWN_DIRECTIVES, BUTTON_DIRECTIVES,DATEPICKER_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import {Calendar} from 'primeng/primeng';
 import * as moment from 'moment';
 let now = moment().format('LLLL');
@@ -16,7 +16,7 @@ let now = moment().format('LLLL');
   templateUrl: 'taskList.component.html',
   styleUrls: ['tasks.component.css'],
   viewProviders:[BS_VIEW_PROVIDERS],
-  directives: [Calendar,AddTaskComponent,CollapseDirective,DROPDOWN_DIRECTIVES,BUTTON_DIRECTIVES,MODAL_DIRECTVES,CORE_DIRECTIVES,DATEPICKER_DIRECTIVES]
+  directives: [Calendar,AddTaskComponent,CollapseDirective,DROPDOWN_DIRECTIVES,BUTTON_DIRECTIVES,CORE_DIRECTIVES,DATEPICKER_DIRECTIVES]
 })
 export class TaskListComponent implements OnInit {
 	taskService: TasksService;

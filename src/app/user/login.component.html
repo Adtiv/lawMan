@@ -1,31 +1,33 @@
 <!--
 <button type="button" class="btn btn-primary" (click)="smModal.show()">login/signup</button>
 <button type="button" class="btn btn-primary" (click)="onLogOut()">logout</button>-->
+<Landing-Page></Landing-Page>
 <a id="clickModal"(click)="smModal.show()"></a>
+<a id="closeModal"(click)="smModal.hide()"></a>
 <div bsModal #smModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="smModal.hide()">
+        <button type="button" class="close" aria-label="Close"(click)="smModal.hide();navLanding()">
           <span aria-hidden="true">&times;</span>
         </button>
-        	<h4 class="modal-title" id="login-title">Login</h4>
-        	<h4 class="modal-title" id="signUp-title">Sign Up</h4>
+        	<h4 class="modal-title" *ngIf="login"id="login-title">Login</h4>
+        	<h4 class="modal-title" *ngIf="signUp"id="signUp-title">Sign Up</h4>
       </div>
       <div class="modal-body">
-        <form class="form-horizontal" (ngSubmit)="onLogin()"id="login">
+        <form class="form-horizontal" *ngIf="login"(ngSubmit)="onLogin()"id="login">
 	        <div class="form-group" show-errors>
 	          <label class="control-label" for="title">Email:</label>
-	          <input type="text"name="email"id="email" class="form-control" placeholder="Email" [(ngModel)]="model.email"required>
+	          <input type="text"name="email"id="email" class="form-control" placeholder="Email" [(ngModel)]="loginEmail"required>
 	          <label class="control-label" for="password">Password:</label>
-	          <input type="text" name="password" id="password" class="form-control" placeholder="Password" [(ngModel)]="password"required>
+	          <input type="password" name="password" id="password" class="form-control" placeholder="Password" [(ngModel)]="loginPassword"required>
 	        </div>
 	        <div class="form-group">
 	          <button type="submit" class="btn btn-primary" >Login</button> or
 	          <button class="btn btn-primary" (click)="navSignUp();">Sign Up</button>
 	        </div>
     	</form>
-    	<form class="form-horizontal" (ngSubmit)="onSignUp()" id="signUp">
+    	<form class="form-horizontal" *ngIf="signUp"(ngSubmit)="onSignUp()" id="signUp">
 	        <div class="form-group" show-errors>
 	          <label class="control-label" for="firstName">First Name:</label>
 	          <input type="text" name="fName" id="fName" class="form-control" placeholder="First Name" [(ngModel)]="model.fName"required>
@@ -34,7 +36,7 @@
 	          <label class="control-label" for="title">Email:</label>
 	          <input type="text" name="email" id="email" class="form-control" placeholder="Email" [(ngModel)]="model.email"required>
 	          <label class="control-label" for="password">Password:</label>
-	          <input type="text" name="password" id="password" class="form-control" placeholder="Password" [(ngModel)]="password"required>
+	          <input type="password" name="password" id="password" class="form-control" placeholder="Password" [(ngModel)]="password"required>
 	        </div>
 	        <div class="form-group">
 	          <button type="submit" class="btn btn-primary" >Sign Up</button> or

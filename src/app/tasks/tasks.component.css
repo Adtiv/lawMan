@@ -3,7 +3,6 @@ section{
 	font-family: "PT Serif";
 	min-height: 600px;
     height: auto !important;
-    height: 600px;
 }
 span.close{
     font-size: 1.8em;

@@ -3,8 +3,7 @@ import { CORE_DIRECTIVES } from '@angular/common';
 import {AngularFire, FirebaseListObservable,FirebaseObjectObservable} from 'angularfire2';
 import {TasksService} from './tasks.service';
 import {CollapseDirective} from 'ng2-bootstrap/ng2-bootstrap';
-import {NgForm} from '@angular/common';
-import {MODAL_DIRECTVES, BS_VIEW_PROVIDERS, DATEPICKER_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
+import {BS_VIEW_PROVIDERS, DATEPICKER_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import {Calendar} from 'primeng/primeng';
@@ -17,7 +16,7 @@ let now = moment().format('LLLL');
   templateUrl: 'addTask.component.html',
   styleUrls: ['tasks.component.css'],
   viewProviders:[BS_VIEW_PROVIDERS],
-  directives: [CollapseDirective,MODAL_DIRECTVES,CORE_DIRECTIVES,DATEPICKER_DIRECTIVES,Calendar]
+  directives: [CollapseDirective,CORE_DIRECTIVES,DATEPICKER_DIRECTIVES,Calendar]
 })
 export class AddTaskComponent implements OnInit {
   taskService: TasksService;

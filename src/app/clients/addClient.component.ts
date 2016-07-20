@@ -3,7 +3,7 @@ import { CORE_DIRECTIVES } from '@angular/common';
 import {AngularFire, FirebaseListObservable} from 'angularfire2';
 import {ClientService} from './clients.service';
 import {CollapseDirective} from 'ng2-bootstrap/ng2-bootstrap';
-import {MODAL_DIRECTVES, BS_VIEW_PROVIDERS, DATEPICKER_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
+import {BS_VIEW_PROVIDERS, DATEPICKER_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 
@@ -13,7 +13,7 @@ import 'rxjs/add/operator/map';
   templateUrl: 'addClient.component.html',
   styleUrls: ['clients.component.css'],
   viewProviders:[BS_VIEW_PROVIDERS],
-  directives: [CollapseDirective,MODAL_DIRECTVES,CORE_DIRECTIVES,DATEPICKER_DIRECTIVES]
+  directives: [CollapseDirective,CORE_DIRECTIVES,DATEPICKER_DIRECTIVES]
 })
 export class AddClientComponent implements OnInit {
   clientService: ClientService;

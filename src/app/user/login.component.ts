@@ -1,16 +1,16 @@
 import { Component, OnInit} from '@angular/core';
 import { CORE_DIRECTIVES } from '@angular/common';
 import {Router} from '@angular/router';
-import {NgForm} from '@angular/common';
 import {MODAL_DIRECTVES, BS_VIEW_PROVIDERS} from 'ng2-bootstrap/ng2-bootstrap';
 import {UserService} from './user.service';
 import {User} from './user';
+import {LandingPageComponent} from './landingPage.component';
 
 @Component({
   moduleId: module.id,
   selector: 'Login',
   templateUrl: 'login.component.html',
-  directives: [MODAL_DIRECTVES,CORE_DIRECTIVES],
+  directives: [CORE_DIRECTIVES,LandingPageComponent, MODAL_DIRECTVES],
   viewProviders:[BS_VIEW_PROVIDERS],
   styleUrls: ['login.component.css'],
   providers: [UserService]
@@ -19,44 +19,47 @@ export class LoginComponent implements OnInit {
   UserService;
   password;
   model = new User("","","");
+  loginEmail;
+  loginPassword;
   user: User;
   router: Router;
+  login;
+  signUp;
   constructor(UserService: UserService, router:Router) {
   	this.UserService = UserService;
     this.router = router;
   }
   ngOnInit() {
+    this.signUp=false;
+    this.login=true;
     document.getElementById('clickModal').click();
   }
+  navLanding(){
+    this.router.navigateByUrl('landingPage');
+  }
   navSignUp(){
-  	document.getElementById('login').style.visibility="hidden";
-  	document.getElementById('login').style.display="none";
-  	document.getElementById('login-title').style.visibility="hidden";
-  	document.getElementById('login-title').style.display="none";
-  	document.getElementById('signUp').style.visibility="visible";
-  	document.getElementById('signUp').style.display="initial";
-  	document.getElementById('signUp-title').style.visibility="visible";
-  	document.getElementById('signUp-title').style.display="initial";
+    this.loginEmail="";
+    this.loginPassword="";
+    this.signUp=true;
+    this.login=false;
   }
   navLogin(){
-  	document.getElementById('login').style.visibility="visible";
-  	document.getElementById('login').style.display="initial";
-  	document.getElementById('login-title').style.visibility="visible";
-  	document.getElementById('login-title').style.display="initial";
-  	document.getElementById('signUp').style.visibility="hidden";
-  	document.getElementById('signUp').style.display="none";
-  	document.getElementById('signUp-title').style.visibility="hidden";
-  	document.getElementById('signUp-title').style.display="none";
+    this.loginEmail="";
+    this.loginPassword="";
+    this.signUp=false;
+    this.login=true;
   }
   onLogOut(){
     this.UserService.logout();
+    this.router.navigateByUrl('landingPage');
   }
   onSignUp(){
   	this.UserService.createUser(this.model.email,this.password,this.model.fName,this.model.lName);
+    //this.router.navigateByUrl('tasks');
   }
   onLogin(){
-  	this.UserService.loginUser(this.model.email,this.password);
-    this.router.navigate(['tasks']);
-    console.log("HERE???");
+  	this.UserService.loginUser(this.loginEmail,this.loginPassword);
+    document.getElementById('closeModal').click();
+    //this.router.navigateByUrl('tasks');
   }
 }

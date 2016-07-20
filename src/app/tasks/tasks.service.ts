@@ -73,6 +73,11 @@ export class TasksService implements OnInit{
       this.task.update({daysTillDue:differenceInDays});
       this.filteredTask=this.af.database.object('tasks/'+task.taskType+'/'+this.userId+'/'+task.$key);
       this.filteredTask.update({daysTillDue:differenceInDays});
+      this.af.database.list('taskClients/'+task.$key).subscribe(snapshots => {
+        snapshots.forEach(snapshot => {
+          this.af.database.object('clientTasks/'+snapshot.$key+'/'+task.$key).update({days:differenceInDays});
+        }); 
+      })
     }
     parseDateISO(date){
       var parsedDate="";

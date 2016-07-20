@@ -3,8 +3,15 @@ section{
 	font-family: "PT Serif";
     min-height: 600px;
     height: auto !important;
-    height: 600px;
 }
 .btn-sm{
 	float:right;
+}
+.integrationLogo{
+	width:90px;
+	height:70px;
+}
+.integrationLink{
+	margin-left:5%;
+	margin-right:5%;
 }

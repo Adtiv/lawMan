@@ -75,10 +75,9 @@ export class UserService implements OnInit{
         this.email="";
         this.fName="";
         this.lName="";
-        location.reload();
+        //location.reload();
     }
     loginUser(email, password){
     	this.af.auth.login({ email: email, password: password });
-        console.log("login");
     }
 }
