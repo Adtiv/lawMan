@@ -8,3 +8,7 @@ section{
 	font-weight: bolder;
 	text-decoration: underline;
 }
+.calendarInput{
+  padding-left:15%;
+  padding-right:15%;
+}

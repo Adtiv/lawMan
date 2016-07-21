@@ -45,7 +45,7 @@
 	  </div>
 	  <br><br><hr>
 		<div class="list-group" *ngIf="searchClient==''">
-		  <a href="#" (click)="activeClient(client)"*ngFor= "let client of clients | async" class="list-group-item"><h4 class="list-group-item-heading">{{client.name}}</h4>
+		  <a href="#" (click)="activeClient(client)"*ngFor= "let client of clients | async" class="list-group-item"><h4 class="list-group-item-heading" style="font-weight:bold;color:rgb(100,100,175)">{{client.name}}</h4>
 		  <small class="list-group-item-text">
 	        <span style="float:right;">{{client.email}}</span>
 	      </small>
@@ -59,7 +59,7 @@
 		        	<ul>
 			            <li *ngFor="let clientTask of clientTasks | async"style="margin-bottom:20px;">
 			              {{clientTask.task}}<span class="glyphicon glyphicon-ok"style="float:right;border:1px solid rgb(100,100,100)"[style.color]="getStyle(clientTask)"></span><br>
-			              <span style="float:right"><i><b>{{clientTask.days}}</b> days</i></span>
+			              <span style="float:right"><i><b>{{clientTask.days}}</b> <span *ngIf="clientTask.days!=1">days</span><span *ngIf="clientTask.days==1">day</span></i></span>
 			            </li>
 			        </ul>
 		        <p>

@@ -1,4 +1,34 @@
 {
-  ".read": true,
-  ".write": true
+  "rules":{
+    "users":{
+      ".read":true,
+      ".write":true
+    },
+    "tasks":{
+	  ".read":true,
+      ".write":true,
+      "$task":{
+        ".indexOn":"daysTillDue",
+        "$statementTasks":{
+          ".indexOn":"daysTillDue"
+        }
+      }
+    },
+    "clientTasks":{
+      ".read":true,
+      ".write":true
+    },
+    "taskClients":{
+      ".read":true,
+      ".write":true
+    },
+  	"clients":{
+	  ".read":true,
+      ".write":true
+    },
+    "calendarEvents":{
+      ".read":true,
+      ".write":true
+    }
+  }
 }

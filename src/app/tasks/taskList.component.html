@@ -72,9 +72,9 @@
         </div>
       </div>
       <hr>
-  	  <a href="#" *ngFor= "let task of tasks | async" class="list-group-item"[style.background-color]="getStyle(task)" (click)="activeTask(task)"><h4 class="list-group-item-heading">{{task.title}}</h4>
+  	  <a href="#" *ngFor= "let task of tasks | async" class="list-group-item"[style.background-color]="getStyle(task)" (click)="activeTask(task)"><h4 class="list-group-item-heading" style="font-weight:bold;">{{task.title}}</h4>
   	  <small class="list-group-item-text">
-          <span style="float:right;">{{task.daysTillDue}} days</span>
+          <span style="float:right;"><b>{{task.daysTillDue}}</b> <span *ngIf="task.daysTillDue!=1">days</span><span *ngIf="task.daysTillDue==1">day</span></span>
         </small>
   		<span>{{task.taskType}}</span>
       <div id="taskDetail"[collapse]="taskDetail(task)">
