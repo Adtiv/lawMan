@@ -77,7 +77,7 @@
 		</a>
 		</div>
 		<div class="list-group" *ngIf="searchClient!=''">
-		  <a href="#" (click)="activeLocalClient(client)"*ngFor= "let client of clientList | search: searchClient" class="list-group-item"><h4 class="list-group-item-heading">{{client.name}}</h4>
+		  <a href="#" (click)="activeLocalClient(client)"*ngFor= "let client of clientList | search: searchClient" class="list-group-item"><h4 class="list-group-item-heading" style="font-weight:bold;color:rgb(100,100,175)">{{client.name}}</h4>
 		  <small class="list-group-item-text">
 	        <span style="float:right;">{{client.email}}</span>
 	      </small>

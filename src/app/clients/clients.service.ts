@@ -14,10 +14,12 @@ export class ClientService implements OnInit{
     userService: UserService;
     userId;
     clientList: Client[];
+    initLocalClient:boolean;
     constructor(af: AngularFire,userService: UserService){
       this.af=af;
       this.userService=userService;
       this.clientList=[];
+      this.initLocalClient=true;
       this.userService.af.auth.subscribe((auth)=>{
         if(auth!=null){
             this.userId=this.userService.uid;
@@ -38,8 +40,11 @@ export class ClientService implements OnInit{
             }
           }).subscribe(snapshots => {
               snapshots.forEach(snapshot => {
-               this.setLocalClients(snapshot.$key,snapshot.name,snapshot.email,snapshot.phoneNumber,snapshot.address);
-        })  
+               if(this.initLocalClient){
+                 this.setLocalClients(snapshot.$key,snapshot.name,snapshot.email,snapshot.phoneNumber,snapshot.address);
+              }
+        })
+        this.initLocalClient=false;  
       })
     }
     setLocalClients(key,name,email,phoneNumber,address){
