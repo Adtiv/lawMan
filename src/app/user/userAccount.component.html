@@ -24,7 +24,9 @@
 			<p><hr>
 			<h2>Integrations:</h2><br>
 			<div style="text-align:center;">
-				<a class="btn integrationLink"><img class="integrationLogo"src="http://lofrev.net/wp-content/photos/2016/06/box-logo-1.png"></a><a class="btn integrationLink"><img class="integrationLogo"src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Outlook.com_icon.svg/2000px-Outlook.com_icon.svg.png"></a>
+				Signed in as: <span *ngIf="msEmail!=''">{{msEmail}}</span>
+				<button (click)="logoutMS()" *ngIf="id!=null">Logout MS</button>
+				<a class="btn integrationLink"><img class="integrationLogo"src="http://lofrev.net/wp-content/photos/2016/06/box-logo-1.png"></a><a (click)="loginMS()"class="btn integrationLink"><img class="integrationLogo"src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Outlook.com_icon.svg/2000px-Outlook.com_icon.svg.png"></a>
 			</div>
 		</div>
 	</div>
