@@ -2,7 +2,8 @@ import { Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from './user.service';
 import kurve = require('kurvejs');
-
+import {Observable} from 'rxjs';
+import {CalendarService} from '../calendar/calendar.service';
 
 @Component({
   moduleId: module.id,
@@ -23,7 +24,7 @@ export class UserAccountComponent implements OnInit {
   msEmail:string;
   msId;
   id;
-  constructor(userService: UserService, router:Router) {
+  constructor(userService: UserService, router:Router,private calendar:CalendarService) {
   	this.userService = userService;
   }
   ngOnInit() {
@@ -45,20 +46,21 @@ export class UserAccountComponent implements OnInit {
           this.isAuthenticated = true;
           console.log(this.isAuthenticated);
           const graph = new kurve.Graph(this.id);
+          var mail;
           graph.me.GetUser().then(user=>{
-            console.log(user);
+            console.log(user.mail);
+            mail=user.mail;
             this.msEmail=user.displayName;
           })
           graph.me.events.GetEvents().then(events=>{
             console.log(events);
+            events.value.forEach(event=>{
+              event.start=event.start.dateTime;
+              event.end=event.end.dateTime;
+              console.log(event.subject);
+            })
+            this.calendar.setMSevents(events.value);
           })
-          graph.me.calendarView.GetEvents().then(data=>{
-              console.log(data.value);
-              data.value.forEach(event=>{
-                  console.log(event.subject);
-              })
-              console.log("HERER");
-          });
       });
   }
   logoutMS(){

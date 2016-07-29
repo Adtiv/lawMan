@@ -42,13 +42,13 @@
 		    </form>
 		  </div><hr>
 		</div>
-		<p-schedule [events]="events |async" [header]="header" [eventLimit]="4" [editable]="true"
+		<p-schedule [events]="events" [header]="header" [eventLimit]="4" [editable]="true"
             (onDayClick)="handleDayClick($event)" (onEventClick)="handleEventClick($event)"></p-schedule>
 		<p-dialog header="Event Details" [(visible)]="dialogVisible" [responsive]="true" showEffect="fade" [modal]="false">
 		    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="event">
 		        <div class="ui-grid-row">
 		            <div class="ui-grid-col-4"><label for="vin">Title</label></div>
-		            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="event.title" /></div>
+		            <div class="ui-grid-col-8"><input pInputText id="title" [(ngModel)]="event.subject" /></div>
 		        </div>
 		        <div class="ui-grid-row">
 		            <div class="ui-grid-col-4"><label for="start">Start</label></div>
@@ -70,5 +70,13 @@
 		        </div>
 		    </footer>
 		</p-dialog>
+		<div>
+				events here:
+			<ul *ngFor="let event of events">
+				<li>{{event.subject}}</li>
+				<li>{{event.start.dateTime}}</li>
+				<li>{{event.end.dateTime}}</li>
+			</ul>
+		</div>
 	</div>
 </section>

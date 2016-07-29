@@ -28,6 +28,7 @@ export class CalendarComponent implements OnInit {
     ngOnInit() {
         //this.eventService.getEvents().then(events => {this.events = events;});
         this.events=this.calendarService.getEvents();
+        //this.events=this.calendarService.msEvents;
         this.header = {
 			left: 'prev,next today',
 			center: 'title',
