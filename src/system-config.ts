@@ -15,6 +15,7 @@ const map: any = {
   'fullcalendar': 'vendor/fullcalendar',
   'box-node-sdk': 'vendor/box-node-sdk',
   'xlsx':'vendor/xlsx/xlsx.js',
+  'xlsx-browserify-shim':'vendor/xlsx-browserify-shim/xlsx.js',
   'kurvejs':'vendor/kurvejs/dist/kurve.js'
 };
 
@@ -36,7 +37,9 @@ const packages: any = {
   'fullcalendar' :{ defaultExtension : "js"},
   'box-node-sdk' :{ defaultExtension : "js"},
   'xlsx' :{ defaultExtension: 'js'},  
-  'kurvejs':{defaultExtension:"js"}
+  'xlsx-browserify-shim' :{ defaultExtension: 'js'},  
+  'kurvejs':{defaultExtension:"js"},
+
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

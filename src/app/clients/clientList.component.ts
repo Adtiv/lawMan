@@ -7,6 +7,7 @@ import { CORE_DIRECTIVES } from '@angular/common';
 import {BS_VIEW_PROVIDERS,CollapseDirective, DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import {SearchPipe} from "./search.pipe"
 //import 'xlsx'; declare let XLSX;
+declare let XLSX;
 
 @Component({	
   moduleId: module.id,
@@ -35,7 +36,7 @@ export class ClientListComponent implements OnInit {
   	phoneNumber;
   	address;
 	constructor(public auth:FirebaseAuth,af: AngularFire,clientService: ClientService,userService:UserService){
-		//this.spreadsheet = XLSX;
+		//this.spreadsheet = XLSX.readFile('test.xlsx');
 		this.clientService = clientService;
 		this.af=af;
 	}

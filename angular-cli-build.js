@@ -24,8 +24,9 @@ module.exports = function(defaults) {
       'primeng/**/*.js',
       'primeui/**/*.*',
       'box-node-sdk/**/*.js',
-      'xlsx/xlsx.js',
-      'kurvejs/dist/kurve.js'
+      'xlsx/**/*.+(js|map)',
+      'xlsx-browserify-shim/**/*.+(js|map)',
+      'kurvejs/**/*.+(html|ts|js|js.map)'
     ]
   });
 };
