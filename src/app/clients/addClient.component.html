@@ -34,7 +34,7 @@
                 <i class="fa fa-close"></i>
                 File type must be ".xlsx"
             </span>
-            <button type="button"*ngIf="file!=null"class="btn btn-link"aria-label="Right Align" (click)="submitList()">submit</button>
+            <button type="button"*ngIf="file!=null"class="btn btn-link" style="color:rgb(40,255,40)"aria-label="Right Align" (click)="submitList()"><b>Submit</b></button>
           </div>
           <br>
           <label class="control-label" for="Name">Name:</label>
@@ -43,23 +43,23 @@
           <span style="color:green" *ngIf="emailText && emailCount!=3">
                 Click to add additional client emails <i>up to 3</i>
           </span>
-          <input type="text"name="email"id="email" class="form-control" placeholder="Email" [(ngModel)]="email"required>
-          <input type="text"name="email2"id="email2" class="form-control" placeholder="Email" [(ngModel)]="email2" *ngIf="emailCount==2 || emailCount==3">
-          <input type="text"name="email2"id="email3" class="form-control" placeholder="Email" [(ngModel)]="email3" *ngIf="emailCount==3">
+          <input type="text"name="email"id="email" class="form-control" placeholder="Email(main)" [(ngModel)]="email"required>
+          <input type="text"name="email2"id="email2" class="form-control" placeholder="Email(alt)" [(ngModel)]="email2" *ngIf="emailCount==2 || emailCount==3">
+          <input type="text"name="email2"id="email3" class="form-control" placeholder="Email(alt)" [(ngModel)]="email3" *ngIf="emailCount==3">
           <label class="control-label" for="phoneNumber" on-mouseover="phoneTextToggle('enter')" on-mouseleave="phoneTextToggle('leave')">Phone Number <i class="glyphicon glyphicon-plus" style="color:green;" (click)="addPhoneNumber()" *ngIf="phoneCount!=3"></i><i class="glyphicon glyphicon-minus" style="color:green;" (click)="collapsePhone()" *ngIf="phoneCount==3"></i></label>            
           <span style="color:green" *ngIf="phoneText && phoneCount!=3">
                 Click to add additional client phone numbers <i>up to 3</i>
           </span>
-          <input type="text"name="phoneNumber"id="phoneNumber" class="form-control" placeholder="Phone Number" [(ngModel)]="phoneNumber"required>
-          <input type="text"name="phoneNumber2"id="phoneNumber2" class="form-control" placeholder="Phone Number" [(ngModel)]="phoneNumber2" *ngIf="phoneCount==2 || phoneCount==3">
-          <input type="text"name="phoneNumber3"id="phoneNumber3" class="form-control" placeholder="Phone Number" [(ngModel)]="phoneNumber3" *ngIf="phoneCount==3">
+          <input type="text"name="phoneNumber"id="phoneNumber" class="form-control" placeholder="Phone Number(main)" [(ngModel)]="phoneNumber"required>
+          <input type="text"name="phoneNumber2"id="phoneNumber2" class="form-control" placeholder="Phone Number(alt)" [(ngModel)]="phoneNumber2" *ngIf="phoneCount==2 || phoneCount==3">
+          <input type="text"name="phoneNumber3"id="phoneNumber3" class="form-control" placeholder="Phone Number(alt)" [(ngModel)]="phoneNumber3" *ngIf="phoneCount==3">
           <label class="control-label" for="address"on-mouseover="addressTextToggle('enter')" on-mouseleave="addressTextToggle('leave')">Address: <i class="glyphicon glyphicon-plus" style="color:green;" (click)="addAddress()" *ngIf="addressCount!=2"></i>
           <i class="glyphicon glyphicon-minus" style="color:green;" (click)="collapseAddress()" *ngIf="addressCount==2"></i></label>  
           <span style="color:green" *ngIf="addressText && addressCount!=2">
                 Click to add additional client addresses <i>up to 2</i>
           </span>
-          <textarea type="text"name="address"id="address" class="form-control" placeholder="Address" [(ngModel)]="address"required></textarea>
-          <textarea type="text"name="address2"id="address2" class="form-control" placeholder="Address" [(ngModel)]="address2"*ngIf="addressCount==2"></textarea>
+          <textarea type="text"name="address"id="address" class="form-control" placeholder="Address(main)" [(ngModel)]="address"required></textarea>
+          <textarea type="text"name="address2"id="address2" class="form-control" placeholder="Address(alt)" [(ngModel)]="address2"*ngIf="addressCount==2"></textarea>
         </div>
         <div class="form-group" style="text-align:center;">
           <button type="submit" class="btn btn-primary">Create</button>

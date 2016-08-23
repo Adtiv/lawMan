@@ -24,6 +24,7 @@ export class ClientListComponent implements OnInit {
   	public isCollapsed:boolean;
   	clientKey;
   	clientTasks: FirebaseListObservable<any[]>;  
+  	hasTasks:boolean;
   	af;	
   	searchClient;
   	clientList;
@@ -126,6 +127,15 @@ export class ClientListComponent implements OnInit {
 	              orderByChild: 'days',
 	            }
 	          });
+			this.clientTasks.subscribe((tasks)=>{
+				console.log(tasks);
+				if(tasks.length>0){
+					this.hasTasks=true;
+				}
+				else{
+					this.hasTasks=false;
+				}
+			})
 			console.log(this.clientKey);
 		}
 		return false;
@@ -142,6 +152,14 @@ export class ClientListComponent implements OnInit {
 	              orderByChild: 'days',
 	            }
 	          });
+			this.clientTasks.subscribe((tasks)=>{
+				if(tasks.length>0){
+					this.hasTasks=true;
+				}
+				else{
+					this.hasTasks=false;
+				}
+			})
 			console.log(this.localClientKey);
 		}
 		return false;		

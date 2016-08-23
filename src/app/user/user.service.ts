@@ -78,6 +78,11 @@ export class UserService implements OnInit{
         //location.reload();
     }
     loginUser(email, password){
-    	this.af.auth.login({ email: email, password: password });
+    	this.af.auth.login({ email: email, password: password }).then((success) => {
+          console.log("Firebase success: " + JSON.stringify(success));
+        })
+        .catch((error) => {
+          console.log("Firebase failure: " + JSON.stringify(error.message));
+        });
     }
 }

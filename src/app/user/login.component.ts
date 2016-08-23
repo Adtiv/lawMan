@@ -13,7 +13,7 @@ import {LandingPageComponent} from './landingPage.component';
   directives: [CORE_DIRECTIVES,LandingPageComponent, MODAL_DIRECTVES],
   viewProviders:[BS_VIEW_PROVIDERS],
   styleUrls: ['login.component.css'],
-  providers: [UserService]
+  providers: []
 })
 export class LoginComponent implements OnInit {
   UserService;
@@ -61,5 +61,7 @@ export class LoginComponent implements OnInit {
   	this.UserService.loginUser(this.loginEmail,this.loginPassword);
     document.getElementById('closeModal').click();
     //this.router.navigateByUrl('tasks');
+    this.loginEmail="";
+    this.loginPassword="";
   }
 }

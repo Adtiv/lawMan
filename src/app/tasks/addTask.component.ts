@@ -1,9 +1,10 @@
 import { Component, OnInit} from '@angular/core';
 import { CORE_DIRECTIVES } from '@angular/common';
+import {FORM_DIRECTIVES} from '@angular/forms';
 import {AngularFire, FirebaseListObservable,FirebaseObjectObservable} from 'angularfire2';
 import {TasksService} from './tasks.service';
 import {CollapseDirective} from 'ng2-bootstrap/ng2-bootstrap';
-import {BS_VIEW_PROVIDERS, DATEPICKER_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
+import {BS_VIEW_PROVIDERS, DATEPICKER_DIRECTIVES, TimepickerComponent} from 'ng2-bootstrap/ng2-bootstrap';
 import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import {Calendar} from 'primeng/primeng';
@@ -16,7 +17,7 @@ let now = moment().format('LLLL');
   templateUrl: 'addTask.component.html',
   styleUrls: ['tasks.component.css'],
   viewProviders:[BS_VIEW_PROVIDERS],
-  directives: [CollapseDirective,CORE_DIRECTIVES,DATEPICKER_DIRECTIVES,Calendar]
+  directives: [CollapseDirective,CORE_DIRECTIVES,DATEPICKER_DIRECTIVES,Calendar,TimepickerComponent, FORM_DIRECTIVES]
 })
 export class AddTaskComponent implements OnInit {
   taskService: TasksService;
@@ -27,11 +28,9 @@ export class AddTaskComponent implements OnInit {
   title;
   description;
   dueDate;
-  //currentDate: Date = new Date();
-  //date: Date = new Date();
   date;
   taskType;
-  //date: Date = new Date();
+  dueTime = '12:00:AM';
   public isCollapsed:boolean;
   constructor(taskService: TasksService, af:AngularFire) {
   	this.taskService=taskService;
@@ -82,8 +81,21 @@ export class AddTaskComponent implements OnInit {
     var currentDate=moment(curr).startOf('day');
     var futureDate =moment(due).startOf('day');
     var differenceInDays = futureDate.diff(currentDate, 'days');
+    var currentHour = moment(new Date());
+    var hourDue;
+    console.log(this.dueTime.substring(6,8));
+    if(this.dueTime.substring(6,8)=='AM'){
+      hourDue=moment(this.dueTime, 'hh:mm: A');
+    }
+    else{
+      var time = (parseInt(this.dueTime.substring(0,2))+12).toString()+this.dueTime.substring(2,8);
+      hourDue=moment(time,'hh:mm: P');
+    }
+    var duration = moment.duration(hourDue.diff(currentHour));
+    var differenceInHours = duration.asHours().toString();
     console.log(currentDate+"    "+futureDate+"   "+differenceInDays);
-    this.taskService.addTask(this.title,this.description,this.date,this.taskType,differenceInDays,this.client);
+    console.log(this.dueTime + "   " +differenceInHours);
+    this.taskService.addTask(this.title,this.description,this.date,this.taskType,differenceInDays,this.client,this.dueTime,differenceInHours);
     this.isCollapsed=!this.isCollapsed;
     this.title="";
     this.description="";

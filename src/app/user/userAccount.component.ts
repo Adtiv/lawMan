@@ -45,7 +45,7 @@ export class UserAccountComponent implements OnInit {
     //this.loginMS();
   }
   loginMS() {
-      const idTest = new kurve.Identity("13f08987-43dc-440f-bf5f-9eea83d10f47", "http://localhost:4200/vendor/kurvejs/dist/login.html", 
+      var idTest = new kurve.Identity("13f08987-43dc-440f-bf5f-9eea83d10f47", "http://localhost:4200/vendor/kurvejs/dist/login.html", 
                 {endpointVersion: kurve.EndpointVersion.v1});
       this.id.loginAsync().then(_ => {
           //console.log(this.id.getAccessTokenAsync());

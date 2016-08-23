@@ -35,6 +35,7 @@ export class TaskListComponent implements OnInit {
   	title;
   	description;
   	dueDate;
+  	dueTime;
   	//currentDate: Date = new Date();
   	date;
   	taskType;
@@ -42,6 +43,7 @@ export class TaskListComponent implements OnInit {
   	updatedTaskKey;
   	af;
   	userService:UserService
+  	past:boolean;
 	constructor(public auth: FirebaseAuth,af: AngularFire,taskService: TasksService, userService:UserService){
 		this.taskService = taskService;
 		this.af=af;
@@ -52,6 +54,7 @@ export class TaskListComponent implements OnInit {
 		//this.client="";
 		this.edit=true;
   	    this.filterButtonText="All Tasks";
+  	    this.past=false;
   	    this.auth.subscribe((data)=>{
   	    	if(data){
 				this.tasks =this.taskService.getTasks('none');
@@ -64,6 +67,7 @@ export class TaskListComponent implements OnInit {
     	console.log('Dropdown is now: ', open);
   	}
 	filterTasks(filter){
+		this.past=false;
 		if(filter=="none"){
   	      this.filterButtonText="All Tasks";
 		}
@@ -100,6 +104,10 @@ export class TaskListComponent implements OnInit {
 		}
 		return false;
 	}
+	pastTasks(){
+		this.past=true;
+		this.tasks=this.taskService.getTasks('past');
+	}
 	updateTask(){
 	    var curr = new Date();
 	    var due = this.taskService.parseDateISO(this.date);
@@ -107,7 +115,7 @@ export class TaskListComponent implements OnInit {
 	    var currentDate=moment(curr).startOf('day');
 	    var futureDate =moment(due).startOf('day');
 	    var differenceInDays = futureDate.diff(currentDate, 'days');
-		this.taskService.updateTask(this.updatedTaskKey,this.title,this.description,this.date,this.taskType,differenceInDays,this.oldType);
+		this.taskService.updateTask(this.updatedTaskKey,this.title,this.description,this.date,this.taskType,differenceInDays,this.dueTime,this.oldType);
 		this.edit=!this.edit;
 	}
 	taskDetail(task){
@@ -134,6 +142,7 @@ export class TaskListComponent implements OnInit {
 		this.updatedTaskKey=task.$key;
 		this.title=task.title;
 		this.description=task.description;
+		this.dueTime=task.dueTime;
 		var hasClients=undefined;
 		var hClients;
 		this.af.database.list('taskClients/'+this.updatedTaskKey).subscribe(snap=>{
@@ -165,7 +174,7 @@ export class TaskListComponent implements OnInit {
 	}
 	getStyle(task: Task){
 		if(task.daysTillDue<=2){
-			return "rgba(255,0,0,.8)";
+			return "rgba(255,0,0,.75)";
 		}
 		else if(task.daysTillDue<=5){
 			return "rgba(255,255,0,.8)";

@@ -37,31 +37,12 @@
               name="client">
             <option *ngFor="let client of clients | async" [value]="client.name+'//'+client.$key">{{client.name}}</option>
           </select><br>
-          <label class="control-label" for="dueDate">Due Date:</label>
-          <p-calendar name="start"[(ngModel)]="date"dateFormat="mm/dd/yy"showAnim="slideDown"[showIcon]="true"></p-calendar>
-          <!--
-          <label class="control-label" for="dueDate">Due Date:</label>
-          <div class="inner-addon right-addon">
-          	<i class ="glyphicon glyphicon-calendar"></i>
-          	<input type="button" name="date"id="taskDueDate" class="form-control" placeholder="Due Date" [(ngModel)]="date" (click)="lgModal.show()" required>
-		      </div>
-    			<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    			  <div class="modal-dialog modal-lg">
-    			    <div class="modal-content">
-    			      <div class="modal-header">
-    			        <button type="button" class="close" (click)="lgModal.hide()" aria-label="Close">
-    			          <span aria-hidden="true">&times;</span>
-    			        </button>
-    			        <h4 class="modal-title">Choose Date</h4>
-    			      </div>
-    			      <div class="modal-body">
-    		        	<pre class="card card-block card-header">Selected date is: <em *ngIf="date">{{ getDate() | date:'shortDate'}}</em></pre>
-    		        	<datepicker name="dueDate" [(ngModel)]="date" showWeeks="true"></datepicker>
-    			      </div>
-    			    </div>
-    			   </div>
-    			 </div>
-          -->
+          <label class="control-label" for="dueDate"><i class="glyphicon glyphicon-calendar"></i> Due Date:</label>
+          <p-calendar name="start"[(ngModel)]="date"dateFormat="mm/dd/yy"showAnim="slideDown"></p-calendar>
+          <div style="float:right;">
+            <label class="control-label"><i class="glyphicon glyphicon-time"></i> Due Time:</label>
+            <p-calendar name="time"[(ngModel)]="dueTime" timeFormat="hh:mm:TT" [timeOnly]="true"></p-calendar>
+          </div>
       </div>
         <div class="form-group" id="submitTask">
           <button type="submit" class="btn btn-primary">Create</button>

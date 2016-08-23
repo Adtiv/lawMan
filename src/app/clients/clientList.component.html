@@ -55,7 +55,7 @@
 		        <p><b>Alt. Number:</b> {{client.phoneNumber}}<p>
 		        <p><b>Address:</b> {{client.address}}<p>
 		        <p><b>Documents:</b> <p>
-		        <p><b>Tasks:</b>
+		        <p *ngIf="hasTasks==true"><b>Tasks:</b>
 		        	<ul>
 			            <li *ngFor="let clientTask of clientTasks | async"style="margin-bottom:20px;">
 			              {{clientTask.task}}<span class="glyphicon glyphicon-ok"style="float:right;border:1px solid rgb(100,100,100)"[style.color]="getStyle(clientTask)"></span><br>
@@ -87,7 +87,7 @@
 		        <p><b>Alt. Number:</b> {{client.phoneNumber}}<p>
 		        <p><b>Address:</b> {{client.address}}<p>
 		        <p><b>Documents:</b> <p>
-		        <p><b>Tasks:</b>
+		        <p *ngIf="hasTasks==true"><b>Tasks:</b>
 		        	<ul>
 			            <li *ngFor="let clientTask of clientTasks | async"style="margin-bottom:20px;">
 			              {{clientTask.task}}<span class="glyphicon glyphicon-ok"style="float:right;border:1px solid rgb(100,100,100)"[style.color]="getStyle(clientTask)"></span><br>

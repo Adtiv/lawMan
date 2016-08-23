@@ -21,14 +21,18 @@
                       name="taskType">
                     <option *ngFor="let t of types" [value]="t">{{t}}</option>
                   </select>
-                  <label class="control-label" for="client">Clients:</label>
+                  <label class="control-label" for="client">Client:</label>
                   <select class="form-control"
                     [(ngModel)]="client"
                       name="client">
                     <option *ngFor="let client of clients | async" [value]="client.name+'//'+client.$key">{{client.name}}</option>
                   </select><br>
-                  <label class="control-label" for="dueDate">Due Date:</label>
-                  <p-calendar name="start"[(ngModel)]="date"dateFormat="mm/dd/yy"showAnim="slideDown"[showIcon]="true"></p-calendar>
+                  <label class="control-label" for="dueDate"><i class="glyphicon glyphicon-calendar"></i> Due Date:</label>
+                  <p-calendar name="start"[(ngModel)]="date"dateFormat="mm/dd/yy"showAnim="slideDown"></p-calendar>
+                  <div style="float:right;">
+                    <label class="control-label"><i class="glyphicon glyphicon-time"></i> Due Time:</label>
+                    <p-calendar name="time"[(ngModel)]="dueTime" timeFormat="hh:mm:TT" [timeOnly]="true"></p-calendar>
+                  </div>
                 </div>
                 <div class="form-group" id="submitTask">
                   <button type="submit" class="btn btn-primary">Update</button>
@@ -69,19 +73,32 @@
                  uncheckable id="future">Future</label>
           <label class="btn" id="all"(click)='filterByColor("none")' btnRadio="Right"
                  uncheckable>All</label>
-        </div>
+        </div><br>
+        <a *ngIf="!past"class="btn btn-link" style="float:left;" (click)="pastTasks()">Show past</a>
+        <a *ngIf="past"class="btn btn-link" style="float:left;" (click)='filterTasks("none")'>Show all</a>
       </div>
       <hr>
   	  <a href="#" *ngFor= "let task of tasks | async" class="list-group-item"[style.background-color]="getStyle(task)" (click)="activeTask(task)"><h4 class="list-group-item-heading" style="font-weight:bold;">{{task.title}}</h4>
   	  <small class="list-group-item-text">
-          <span style="float:right;"><b>{{task.daysTillDue}}</b> <span *ngIf="task.daysTillDue!=1">days</span><span *ngIf="task.daysTillDue==1">day</span></span>
+          <span *ngIf="task.daysTillDue!=0"style="float:right;"><b>{{task.daysTillDue}}</b> <span *ngIf="task.daysTillDue!=1">days</span><span *ngIf="task.daysTillDue==1">day</span></span>
+          <span *ngIf="task.daysTillDue==0"style="float:right;">Due at: <b>{{task.dueTime}}</b></span>
+        <!--
+          <span *ngIf="task.daysTillDue==0 && task.hoursTillDue<0"style="float:right;"><b>{{task.hoursTillDue.substring(0,3)}}</b> <span *ngIf="task.hoursTillDue!=1">hours </span><span *ngIf="task.hoursTillDue==1">hour </span><span>{{task.hoursTillDue.substring(3,task.hoursTillDue.length)*60}} minutes</span></span>
+          
+          <span *ngIf="task.daysTillDue==0 && task.hoursTillDue>=0"style="float:right;">
+            <span *ngIf="task.hoursTillDue<10"><b>{{task.hoursTillDue.substring(0,1)}}</b> <span *ngIf="task.hoursTillDue!=1">hours </span><span *ngIf="task.hoursTillDue==1">hour </span><span>{{(task.hoursTillDue.substring(1,task.hoursTillDue.length)*60).toString().substring(0,2)}} minutes</span></span>
+
+            <span *ngIf="task.hoursTillDue>=10"><b>{{task.hoursTillDue.substring(0,2)}}</b> <span *ngIf="task.hoursTillDue!=1">hours </span><span *ngIf="task.hoursTillDue==1">hour </span><span>{{task.hoursTillDue.substring(2,task.hoursTillDue.length)*60}} minutes</span></span>
+          </span>
+        -->
         </small>
   		<span>{{task.taskType}}</span>
       <div id="taskDetail"[collapse]="taskDetail(task)">
         <hr>
         <p><b>Description:</b> {{task.description}}<p>
         <p><b>Due Date:</b> {{task.dueDate}}<p>
-        <p><b>Clients:</b>
+        <p><b>Due Time:</b> {{task.dueTime}}<p>
+        <p><b>Client:</b>
             <span *ngFor="let taskClient of taskClients | async">
               {{taskClient.client}}
             </span>
