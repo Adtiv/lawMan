@@ -52,8 +52,12 @@
 			<span>{{client.phoneNumber}}</span>
 			<div id="clientDetail"[collapse]="clientDetail(client)">
 		        <hr>
-		        <p><b>Alt. Number:</b> {{client.phoneNumber}}<p>
+		       	<p *ngIf="client.email2!=null"><b>Email(2):</b> {{client.email2}}<p>
+		       	<p *ngIf="client.email3!=null"><b>Email(3):</b> {{client.email3}}<p>
+		        <p *ngIf="client.phoneNumber2!=null"><b>Phone Number(2):</b> {{client.phoneNumber2}}<p>
+		        <p *ngIf="client.phoneNumber3!=null"><b>Phone Number(3):</b> {{client.phoneNumber3}}<p>
 		        <p><b>Address:</b> {{client.address}}<p>
+		        <p *ngIf="client.address2!=null"><b>Address(2):</b> {{client.address2}}<p>
 		        <p><b>Documents:</b> <p>
 		        <p *ngIf="hasTasks==true"><b>Tasks:</b>
 		        	<ul>
@@ -84,8 +88,12 @@
 			<span>{{client.phoneNumber}}</span>
 			<div id="clientDetail"[collapse]="localClientDetail(client)">
 		        <hr>
-		        <p><b>Alt. Number:</b> {{client.phoneNumber}}<p>
+				<p *ngIf="client.email2!=''"><b>Email(2):</b> {{client.email2}}<p>
+		       	<p *ngIf="client.email3!=''"><b>Email(3):</b> {{client.email3}}<p>
+		        <p *ngIf="client.phoneNumber2!=''"><b>Phone Number(2):</b> {{client.phoneNumber2}}<p>
+		        <p *ngIf="client.phoneNumber3!=''"><b>Phone Number(3):</b> {{client.phoneNumber3}}<p>
 		        <p><b>Address:</b> {{client.address}}<p>
+		        <p *ngIf="client.address2!=''"><b>Address(2):</b> {{client.address2}}<p>
 		        <p><b>Documents:</b> <p>
 		        <p *ngIf="hasTasks==true"><b>Tasks:</b>
 		        	<ul>

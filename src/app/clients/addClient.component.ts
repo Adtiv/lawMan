@@ -54,6 +54,11 @@ export class AddClientComponent implements OnInit {
     this.fileName='';
     this.isCollapsed = true;
     this.fileError=false;
+    this.email2="";
+    this.email3="";
+    this.phoneNumber2="";
+    this.phoneNumber3="";
+    this.address2="";
   }
   openClients(){
   	this.isCollapsed=!this.isCollapsed;
@@ -91,8 +96,8 @@ export class AddClientComponent implements OnInit {
       oReq.open("GET", fileURL, true);
       oReq.responseType = "arraybuffer";
       var cliServiceRef=this.clientService;
-      var addClientList=function(name,email,phoneNumber,address){
-         cliServiceRef.addClient(name,email,phoneNumber,address);
+      var addClientList=function(name,email,email2,email3,phoneNumber,phoneNumber2,phoneNumber3,address,address2){
+         cliServiceRef.addClient(name,email,email2,email3,phoneNumber,phoneNumber2,phoneNumber3, address,address2);
       }
       oReq.onload = function(e) {
         var arraybuffer = oReq.response;
@@ -110,16 +115,26 @@ export class AddClientComponent implements OnInit {
           var rowCap;
           var name;
           var email;
+          var email2="";
+          var email3="";
           var phoneNumber;
+          var phoneNumber2="";
+          var phoneNumber3="";
           var address;
+          var address2="";
           for (var z in worksheet) {
             /* all keys that do not begin with "!" correspond to cell addresses */
             if(z[0] === '!') continue;
               row=parseInt(z.substring(1,z.length));
               if(row==rowCap){
                 console.log("NEW ROW");
-                addClientList(name,email,phoneNumber,address);
+                addClientList(name,email,email2,email3,phoneNumber,phoneNumber2,phoneNumber3,address,address2);
                 //this.clientService.addClient(name,email,phoneNumber,address);
+                email2="";
+                email3="";
+                phoneNumber2="";
+                phoneNumber3="";
+                address2="";
               }
               rowCap=parseInt(z.substring(1,z.length))+1;
               if(z.substring(0,1)=='A'){
@@ -132,15 +147,40 @@ export class AddClientComponent implements OnInit {
                 email=JSON.stringify(worksheet[z].v).substring(1,JSON.stringify(worksheet[z].v).length-1);
                 console.log(email);
               }
-              if(z.substring(0,1)=='D'){
+              if(z.substring(0,1)=='C'){
+                console.log("email2");
+                email2=JSON.stringify(worksheet[z].v).substring(1,JSON.stringify(worksheet[z].v).length-1);
+                console.log(email2);
+              }
+               if(z.substring(0,1)=='D'){
+                console.log("email3");
+                email3=JSON.stringify(worksheet[z].v).substring(1,JSON.stringify(worksheet[z].v).length-1);
+                console.log(email3);
+              }
+              if(z.substring(0,1)=='E'){
                 console.log("phoneNumber");            
                 phoneNumber=JSON.stringify(worksheet[z].v);
                 console.log(phoneNumber);
               }
               if(z.substring(0,1)=='F'){
+                console.log("phoneNumber2");            
+                phoneNumber2=JSON.stringify(worksheet[z].v);
+                console.log(phoneNumber2);
+              }
+              if(z.substring(0,1)=='G'){
+                console.log("phoneNumber3");            
+                phoneNumber3=JSON.stringify(worksheet[z].v);
+                console.log(phoneNumber3);
+              }
+              if(z.substring(0,1)=='H'){
                 console.log("address");
                 address=JSON.stringify(worksheet[z].v).substring(1,JSON.stringify(worksheet[z].v).length-1);
                 console.log(address);
+              }
+              if(z.substring(0,1)=='I'){
+                console.log("address2");
+                address2=JSON.stringify(worksheet[z].v).substring(1,JSON.stringify(worksheet[z].v).length-1);
+                console.log(address2);
               }
             console.log(z.substring(1,z.length) + "=" + JSON.stringify(worksheet[z].v ));
           }
@@ -152,11 +192,11 @@ export class AddClientComponent implements OnInit {
     this.file=null;
     this.isCollapsed=true;
   }
-  addClientList(name,email,phonenumber,address){
-    this.clientService.addClient(name,email,phonenumber,address);
+  addClientList(name,email,email2,email3,phonenumber,phoneNumber2,phoneNumber3,address,address2){
+    this.clientService.addClient(name,email,email2,email3,phonenumber,phoneNumber2,phoneNumber3,address,address2);
   }
   addClient(){
-    this.clientService.addClient(this.name,this.email,this.phoneNumber,this.address);
+    this.clientService.addClient(this.name,this.email,this.email2,this.email3,this.phoneNumber,this.phoneNumber2,this.phoneNumber3,this.address,this.address2);
     this.isCollapsed=!this.isCollapsed;
     this.name="";
     this.email="";

@@ -41,14 +41,30 @@ export class ClientService implements OnInit{
           }).subscribe(snapshots => {
               snapshots.forEach(snapshot => {
                if(this.initLocalClient){
-                 this.setLocalClients(snapshot.$key,snapshot.name,snapshot.email,snapshot.phoneNumber,snapshot.address);
+
+                 this.setLocalClients(snapshot.$key,snapshot.name,snapshot.email,snapshot.email2,snapshot.email3,snapshot.phoneNumber,snapshot.phoneNumber2,snapshot.phoneNumber3,snapshot.address,snapshot.address2);
               }
         })
         this.initLocalClient=false;  
       })
     }
-    setLocalClients(key,name,email,phoneNumber,address){
-      this.clientList.push(new Client(key,name,email,phoneNumber,address));
+    setLocalClients(key,name,email,email2,email3,phoneNumber,phoneNumber2,phoneNumber3,address,address2){
+      if(email2==null){
+        email2="";
+      }
+      if(email3==null){
+        email3="";
+      }
+      if(phoneNumber2==null){
+        phoneNumber2="";
+      }
+      if(phoneNumber3==null){
+        phoneNumber3="";
+      }
+      if(address2==null){
+        address2="";
+      }
+      this.clientList.push(new Client(key,name,email,email2,email3,phoneNumber,phoneNumber2,phoneNumber3,address,address2));
     }
     getClients(){
       if(this.userId!=null){
@@ -63,11 +79,26 @@ export class ClientService implements OnInit{
     getLocalClientList(){
       return this.clientList;
     }
-    addClient(name, email,phoneNumber,address){
+    addClient(name, email,email2,email3,phoneNumber,phoneNumber2,phoneNumber3,address,address2){
       console.log(name+"   "+email+" "+phoneNumber+" " +address);
       this.clients=this.af.database.list('clients/'+this.userService.uid);
       this.clientKey = this.clients.push({uid:this.userService.uid,name:name,email:email,phoneNumber:phoneNumber,address:address}).key;
-      this.addSortLocalClientArray(new Client(this.clientKey,name,email,phoneNumber,address));
+      if(email2!=""){
+        this.af.database.object('clients/'+this.userService.uid+'/'+this.clientKey).update({email2:email2});
+      }
+      if(email3!=""){
+        this.af.database.object('clients/'+this.userService.uid+'/'+this.clientKey).update({email3:email3});
+      }
+      if(phoneNumber2!=""){
+        this.af.database.object('clients/'+this.userService.uid+'/'+this.clientKey).update({phoneNumber2:phoneNumber2});        
+      }
+      if(phoneNumber3!=""){
+        this.af.database.object('clients/'+this.userService.uid+'/'+this.clientKey).update({phoneNumber3:phoneNumber3});                
+      }
+      if(address2!=""){
+        this.af.database.object('clients/'+this.userService.uid+'/'+this.clientKey).update({address2:address2});                        
+      }
+      this.addSortLocalClientArray(new Client(this.clientKey,name,email,email2,email3,phoneNumber,phoneNumber2,phoneNumber3,address,address2));
     }
     addSortLocalClientArray(client){
       this.clientList.push(client);
@@ -124,17 +155,32 @@ export class Client{
   key;
   name;
   email;
+  email2;
+  email3;
   phoneNumber;
+  phoneNumber2;
+  phoneNumber3;
   address;
+  address2;
   constructor(key,
               name,
               email,
+              email2,
+              email3,
               phoneNumber,
-              address){
+              phoneNumber2,
+              phoneNumber3,
+              address,
+              address2){
     this.key=key;
     this.name=name;
     this.email=email;
+    this.email2=email2;
+    this.email3=email3;
     this.phoneNumber=phoneNumber;
+    this.phoneNumber2=phoneNumber2;
+    this.phoneNumber3=phoneNumber3;
     this.address=address;
+    this.address2=address2;
   }
 }
