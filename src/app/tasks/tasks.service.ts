@@ -57,6 +57,7 @@ export class TasksService implements OnInit{
         snapshots.forEach(snapshot => {
           count++;
           this.calculateNewDaysTillDue(snapshot);
+          //this.calculateNewTimeDue(snapshot);
         });  
       })
       console.log("COUNT: " + count);
@@ -70,6 +71,47 @@ export class TasksService implements OnInit{
         });  
       })      
       console.log("COUNT: " + count);
+    }
+    calculateNewTimeDue(task){
+      var differenceInHours="0";
+      //console.log("GETS HERER??");
+        var currentHour = moment(new Date());
+        var hourDue;
+        if(task.dueTime.substring(6,8)=='AM'){
+          hourDue=moment(task.dueTime, 'hh:mm: A');
+        }
+        else{
+          var time = (parseInt(task.dueTime.substring(0,2))+12).toString()+task.dueTime.substring(2,8);
+          hourDue=moment(time,'hh:mm: P');
+        }
+        var duration = moment.duration(hourDue.diff(currentHour));
+        differenceInHours = duration.asHours().toString();
+      differenceInHours=differenceInHours.substring(0,4);
+      console.log(differenceInHours);
+      this.task=this.af.database.object('tasks/'+this.userId+'/'+task.$key);
+      this.task.update({hoursTillDue:differenceInHours});
+      this.filteredTask=this.af.database.object('tasks/'+task.taskType+'/'+this.userId+'/'+task.$key);
+      this.filteredTask.update({hoursTillDue:differenceInHours});
+    }
+    deletePastTasks(){
+      this.tasks = this.af.database.list('tasks/'+this.userId,{
+        query: {
+          orderByChild: 'daysTillDue',
+          startAt:-30,
+          endAt:0
+        }
+      })
+      this.tasks.subscribe(snapshots=>{
+        snapshots.forEach(snapshot=>{
+          this.af.database.object('tasks/'+this.userId+'/'+snapshot.$key).remove();
+          this.af.database.object('tasks/'+snapshot.taskType+'/'+this.userId+'/'+snapshot.$key).remove();
+          this.af.database.list('taskClients/'+snapshot.$key).subscribe(snapshots => {
+            snapshots.forEach(snap => {
+              this.af.database.object('clientTasks/'+snap.$key+'/'+snapshot.$key).remove();
+            })
+          })          
+        })
+      })  
     }
     calculateNewDaysTillDue(task){
       var curr = new Date();
@@ -96,14 +138,28 @@ export class TasksService implements OnInit{
       console.log(differenceInHours);
       */
       this.task=this.af.database.object('tasks/'+this.userId+'/'+task.$key);
-      this.task.update({daysTillDue:differenceInDays,hoursTillDue:'0'});
       this.filteredTask=this.af.database.object('tasks/'+task.taskType+'/'+this.userId+'/'+task.$key);
-      this.filteredTask.update({daysTillDue:differenceInDays,hoursTillDue:'0'});
-      this.af.database.list('taskClients/'+task.$key).subscribe(snapshots => {
-        snapshots.forEach(snapshot => {
-          this.af.database.object('clientTasks/'+snapshot.$key+'/'+task.$key).update({days:differenceInDays});
-        }); 
-      })
+      if(differenceInDays>=-30){
+        this.task.update({daysTillDue:differenceInDays});
+        this.filteredTask.update({daysTillDue:differenceInDays});
+        this.af.database.list('taskClients/'+task.$key).subscribe(snapshots => {
+          snapshots.forEach(snapshot => {
+            this.af.database.object('clientTasks/'+snapshot.$key+'/'+task.$key).update({days:differenceInDays});
+            if(task.dueTime!=null){
+              this.af.database.object('clientTasks/'+snapshot.$key+'/'+task.$key).update({timeDue:task.dueTime});
+            }
+          }); 
+        })
+      }
+      else{
+        this.task.remove();
+        this.filteredTask.remove();
+        this.af.database.list('taskClients/'+task.$key).subscribe(snapshots => {
+          snapshots.forEach(snapshot => {
+            this.af.database.object('clientTasks/'+snapshot.$key+'/'+task.$key).remove();
+          })
+        })
+      }
     }
     parseDateISO(date){
       var parsedDate="";
@@ -211,8 +267,10 @@ export class TasksService implements OnInit{
       this.taskKey = this.tasks.push({uid:this.userService.uid,title:title,description:description,dueDate:dueDate,dueTime:dueTime,taskType:taskType,daysTillDue:daysTillDue,hoursTillDue:differenceInHours}).key;
       this.filteredTask=this.af.database.object('tasks/'+taskType+'/'+this.userService.uid+'/'+this.taskKey);
       this.filteredTask.set({uid:this.userService.uid,title:title,description:description,dueDate:dueDate,dueTime:dueTime,taskType:taskType,daysTillDue:daysTillDue,hoursTillDue:differenceInHours});
-      this.parseClient(client);
-      this.addClientTask(this.clientKey,this.clientName,this.taskKey,title,daysTillDue);
+      if(client!=""){
+        this.parseClient(client);
+        this.addClientTask(this.clientKey,this.clientName,this.taskKey,title,daysTillDue);
+      }
       //this.userService.addUserTask(this.taskKey);
     }
     parseClient(client){

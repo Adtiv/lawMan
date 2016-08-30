@@ -60,16 +60,19 @@
 		        </div>
 		        <div class="ui-grid-row">
 		            <div class="ui-grid-col-4"><label for="allday">All Day</label></div>
-		            <div class="ui-grid-col-8"><p-toggleButton [(ngModel)]="event.allDay" style="width:150px" onLabel="Yes" offLabel="No"></p-toggleButton></div>
+		            <div class="ui-grid-col-8"></div>
 		        </div>
 		    </div>
 		    <footer>
 		        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+		        	<!--
 		            <button type="button" pButton icon="fa-close" (click)="deleteEvent()" label="Delete"></button>
 		            <button type="button" pButton icon="fa-check" (click)="saveEvent()" label="Save"></button>
+		        	-->
 		        </div>
 		    </footer>
 		</p-dialog>
+		<!--
 		<div>
 				events here:
 			<ul *ngFor="let event of events">
@@ -78,5 +81,6 @@
 				<li>{{event.end.dateTime}}</li>
 			</ul>
 		</div>
+		-->
 	</div>
 </section>

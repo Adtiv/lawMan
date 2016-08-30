@@ -108,6 +108,9 @@ export class TaskListComponent implements OnInit {
 		this.past=true;
 		this.tasks=this.taskService.getTasks('past');
 	}
+	deletePastTasks(){
+		this.taskService.deletePastTasks();
+	}
 	updateTask(){
 	    var curr = new Date();
 	    var due = this.taskService.parseDateISO(this.date);

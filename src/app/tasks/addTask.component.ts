@@ -32,6 +32,8 @@ export class AddTaskComponent implements OnInit {
   taskType;
   dueTime = '12:00:AM';
   public isCollapsed:boolean;
+  typeFilled:boolean;
+  titleFilled:boolean;
   constructor(taskService: TasksService, af:AngularFire) {
   	this.taskService=taskService;
     this.client="";
@@ -44,6 +46,10 @@ export class AddTaskComponent implements OnInit {
         this.clients= null;
       }
     });
+    this.titleFilled=false;
+    this.typeFilled=false;
+    this.date='';
+
   }
   ngOnInit() {
     this.isCollapsed = true;
@@ -55,6 +61,21 @@ export class AddTaskComponent implements OnInit {
     return this.date && this.date.getTime() || new Date().getTime();
   }
   */
+  keyTitle(event:any){
+    if(event.target.value!=''){
+      this.titleFilled=true;
+    }
+    else{
+      this.titleFilled=false;
+    }
+  }
+  keyType(event:any){
+    console.log(event);
+    this.typeFilled=true;
+  }
+  keyTime(event:any){
+    console.log(event);
+  }
   formatDate(date){
   	var formattedDate="";
   	if(date.getMonth()<10){
@@ -102,6 +123,7 @@ export class AddTaskComponent implements OnInit {
     this.date="";
     this.taskType="";
     this.client=null;
+    this.titleFilled=false;
   }
   setClient(){
     //this.client=client;

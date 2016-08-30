@@ -31,11 +31,16 @@ export class ClientListComponent implements OnInit {
   	spreadsheet;
   	localClientKey;
   	updatedClientKey;
-  	edit;
-  	name;
-  	email;
+  	edit:boolean;
+  	name:string;
+  	email:string;
+  	email2:string;
+  	email3:string;
   	phoneNumber;
-  	address;
+  	phoneNumber2;
+  	phoneNumber3;
+  	address:string;
+  	address2:string;
 	constructor(public auth:FirebaseAuth,af: AngularFire,clientService: ClientService,userService:UserService){
 		//this.spreadsheet = XLSX.readFile('test.xlsx');
 		this.clientService = clientService;
@@ -50,6 +55,11 @@ export class ClientListComponent implements OnInit {
 		this.searchClient="";
 		this.isCollapsed = true;
 		this.edit=true;
+		this.email2="";
+		this.email3="";
+		this.phoneNumber2="";
+		this.phoneNumber3="";
+		this.address2="";
 	}
 	onKey(event:any){
 		this.clientList=this.clientService.getLocalClientList();
@@ -60,6 +70,21 @@ export class ClientListComponent implements OnInit {
 		this.edit=!this.edit;
 		this.name=client.name;
 		this.email=client.email;
+		if(client.email2!=null){
+			this.email2=client.email2;
+		}
+		if(client.email3!=null){
+			this.email3=client.email3;
+		}
+		if(client.phoneNumber2!=null){
+			this.phoneNumber2=client.phoneNumber2;
+		}
+		if(client.phoneNumber3!=null){
+			this.phoneNumber3=client.phoneNumber3;
+		}
+		if(client.address2!=null){
+			this.address2=client.address2;
+		}
 		this.phoneNumber=client.phoneNumber;
 		this.address=client.address;
 		if(!isLocal){
@@ -83,10 +108,15 @@ export class ClientListComponent implements OnInit {
 	}
 	updateClient(){
 		this.edit=!this.edit;
-		this.clientService.updateClient(this.updatedClientKey,this.name,this.email,this.phoneNumber,this.address);
+		this.clientService.updateClient(this.updatedClientKey,this.name,this.email,this.email2,this.email3,this.phoneNumber,this.phoneNumber2,this.phoneNumber3,this.address,this.address2);
 	}
 	closeEdit(){
 		this.edit=!this.edit;
+		this.email2="";
+		this.email3="";
+		this.phoneNumber2="";
+		this.phoneNumber3="";
+		this.address2="";
 	}
 	deleteClient(client){
 		this.clientService.deleteClient(client.$key);

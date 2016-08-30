@@ -21,7 +21,7 @@
     <form class="form-horizontal" (ngSubmit)="addClient()">
       <fieldset>
         <div class="form-group clientInput" show-errors>
-            <p-dialog style="text-align:center;"on-mouseleave="endDialog()"header="Have an existing client list?" [(visible)]="display" [responsive]="true" showEffect="fade" [modal]="false">
+            <p-dialog style="text-align:center;"on-mouseleave="endDialog()"header="Upload List" [(visible)]="display" [responsive]="true" showEffect="fade" [modal]="false">
                 You can upload an excel spreadsheet of your client list in<button class="btn btn-link" (click)="navHelp()">this format</button>
             </p-dialog>
           <div style="text-align:center;">
@@ -37,16 +37,16 @@
             <button type="button"*ngIf="file!=null"class="btn btn-link" style="color:rgb(40,255,40)"aria-label="Right Align" (click)="submitList()"><b>Submit</b></button>
           </div>
           <br>
-          <label class="control-label" for="Name">Name:</label>
+          <label class="control-label" for="Name">*Name:</label>
           <input type="text"name="name"id="name" class="form-control" placeholder="Name" [(ngModel)]="name"required>
-          <label class="control-label" on-mouseover="emailTextToggle('enter')" on-mouseleave="emailTextToggle('leave')"for="description">Email: <i class="glyphicon glyphicon-plus" style="color:green;" (click)="addEmail()"*ngIf="emailCount!=3"></i><i class="glyphicon glyphicon-minus" style="color:green;" (click)="collapseEmail()"*ngIf="emailCount==3"></i></label>           
+          <label class="control-label" on-mouseover="emailTextToggle('enter')" on-mouseleave="emailTextToggle('leave')"for="description">*Email: <i class="glyphicon glyphicon-plus" style="color:green;" (click)="addEmail()"*ngIf="emailCount!=3"></i><i class="glyphicon glyphicon-minus" style="color:green;" (click)="collapseEmail()"*ngIf="emailCount==3"></i></label>           
           <span style="color:green" *ngIf="emailText && emailCount!=3">
                 Click to add additional client emails <i>up to 3</i>
           </span>
           <input type="text"name="email"id="email" class="form-control" placeholder="Email(main)" [(ngModel)]="email"required>
           <input type="text"name="email2"id="email2" class="form-control" placeholder="Email(alt)" [(ngModel)]="email2" *ngIf="emailCount==2 || emailCount==3">
           <input type="text"name="email2"id="email3" class="form-control" placeholder="Email(alt)" [(ngModel)]="email3" *ngIf="emailCount==3">
-          <label class="control-label" for="phoneNumber" on-mouseover="phoneTextToggle('enter')" on-mouseleave="phoneTextToggle('leave')">Phone Number <i class="glyphicon glyphicon-plus" style="color:green;" (click)="addPhoneNumber()" *ngIf="phoneCount!=3"></i><i class="glyphicon glyphicon-minus" style="color:green;" (click)="collapsePhone()" *ngIf="phoneCount==3"></i></label>            
+          <label class="control-label" for="phoneNumber" on-mouseover="phoneTextToggle('enter')" on-mouseleave="phoneTextToggle('leave')">*Phone Number <i class="glyphicon glyphicon-plus" style="color:green;" (click)="addPhoneNumber()" *ngIf="phoneCount!=3"></i><i class="glyphicon glyphicon-minus" style="color:green;" (click)="collapsePhone()" *ngIf="phoneCount==3"></i></label>            
           <span style="color:green" *ngIf="phoneText && phoneCount!=3">
                 Click to add additional client phone numbers <i>up to 3</i>
           </span>
@@ -58,7 +58,7 @@
           <span style="color:green" *ngIf="addressText && addressCount!=2">
                 Click to add additional client addresses <i>up to 2</i>
           </span>
-          <textarea type="text"name="address"id="address" class="form-control" placeholder="Address(main)" [(ngModel)]="address"required></textarea>
+          <textarea type="text"name="address"id="address" class="form-control" placeholder="Address(main)" [(ngModel)]="address"></textarea>
           <textarea type="text"name="address2"id="address2" class="form-control" placeholder="Address(alt)" [(ngModel)]="address2"*ngIf="addressCount==2"></textarea>
         </div>
         <div class="form-group" style="text-align:center;">

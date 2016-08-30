@@ -21,12 +21,13 @@
     <form class="form-horizontal" (ngSubmit)="addTask(client)">
       <fieldset>
         <div class="form-group taskInput" show-errors>
-          <label class="control-label" for="title">Title:</label>
-          <input type="text"name="title"id="taskTitle" class="form-control" placeholder="Title" [(ngModel)]="title"required>
+          <!--<div style="text-align:center"> <span style="color:red;">* is required</span></div>-->
+          <label class="control-label" for="title">Title:<span style="color:red; font-weight:normal" *ngIf="!titleFilled"> *</span> <span class="glyphicon glyphicon-ok"style="color:green; font-weight:normal" *ngIf="titleFilled"></span></label>
+          <input type="text"name="title"id="taskTitle" class="form-control" placeholder="Title" (keyup)="keyTitle($event)"[(ngModel)]="title"required>
           <label class="control-label" for="description">Description:</label>
           <input type="text"  name="description"id="taskDescription" class="form-control" placeholder="Description" [(ngModel)]="description"required>
-          <label class="control-label" for="taskType">Task Type:</label>
-          <select class="form-control" id="taskType"required
+          <label class="control-label" for="taskType">Task Type:<span style="color:red; font-weight:normal" *ngIf="!typeFilled"> *</span> <span class="glyphicon glyphicon-ok"style="color:green; font-weight:normal" *ngIf="typeFilled"></span></label>
+          <select (change)="keyType($event)"class="form-control" id="taskType"required
             [(ngModel)]="taskType"
               name="taskType">
             <option *ngFor="let t of types" [value]="t">{{t}}</option>
@@ -37,11 +38,11 @@
               name="client">
             <option *ngFor="let client of clients | async" [value]="client.name+'//'+client.$key">{{client.name}}</option>
           </select><br>
-          <label class="control-label" for="dueDate"><i class="glyphicon glyphicon-calendar"></i> Due Date:</label>
+          <label class="control-label" for="dueDate"><i class="glyphicon glyphicon-calendar"></i> Due Date:<span style="color:red; font-weight:normal" *ngIf="date==''"> *</span> <span class="glyphicon glyphicon-ok"style="color:green; font-weight:normal" *ngIf="date!=''"></span></label>
           <p-calendar name="start"[(ngModel)]="date"dateFormat="mm/dd/yy"showAnim="slideDown"></p-calendar>
           <div style="float:right;">
             <label class="control-label"><i class="glyphicon glyphicon-time"></i> Due Time:</label>
-            <p-calendar name="time"[(ngModel)]="dueTime" timeFormat="hh:mm:TT" [timeOnly]="true"></p-calendar>
+            <p-calendar name="time"[(ngModel)]="dueTime" timeFormat="hh:mm:TT" [timeOnly]="true"(click)="keyTime($event)"></p-calendar>
           </div>
       </div>
         <div class="form-group" id="submitTask">

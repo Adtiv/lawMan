@@ -18,6 +18,9 @@
 	          <input type="text"name="email"id="email" class="form-control" placeholder="Email" [(ngModel)]="loginEmail"required>
 	          <label class="control-label" for="password">Password:</label>
 	          <input type="password" name="password" id="password" class="form-control" placeholder="Password" [(ngModel)]="loginPassword"required>
+	          <span style="color:red;" *ngIf="loginStatus!='success' || loginStatus!=''">
+                {{loginStatus}}
+              </span>
 	          <button class="btn btn-link" (click)="forgotPassword();">Forgot Password?</button><br>
 	        </div>
 	        <div class="form-group" style="text-align:center">

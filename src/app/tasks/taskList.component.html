@@ -76,6 +76,7 @@
         </div><br>
         <a *ngIf="!past"class="btn btn-link" style="float:left;" (click)="pastTasks()">Show past</a>
         <a *ngIf="past"class="btn btn-link" style="float:left;" (click)='filterTasks("none")'>Show all</a>
+        <a *ngIf="past"class="btn btn-link" style="float:right;color:red" (click)="deletePastTasks()">Delete all</a>
       </div>
       <hr>
   	  <a href="#" *ngFor= "let task of tasks | async" class="list-group-item"[style.background-color]="getStyle(task)" (click)="activeTask(task)"><h4 class="list-group-item-heading" style="font-weight:bold;">{{task.title}}</h4>

@@ -58,6 +58,7 @@ export class AddClientComponent implements OnInit {
     this.email3="";
     this.phoneNumber2="";
     this.phoneNumber3="";
+    this.address="";
     this.address2="";
   }
   openClients(){
@@ -120,7 +121,7 @@ export class AddClientComponent implements OnInit {
           var phoneNumber;
           var phoneNumber2="";
           var phoneNumber3="";
-          var address;
+          var address="";
           var address2="";
           for (var z in worksheet) {
             /* all keys that do not begin with "!" correspond to cell addresses */

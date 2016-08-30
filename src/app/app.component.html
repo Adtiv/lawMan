@@ -7,7 +7,8 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" [routerLink]="['tasks']" style="font-size:24px;">App Logo  </a>
+      <a class="navbar-brand" *ngIf="userState" style="font-size:24px;">App Logo  </a>
+      <a class="navbar-brand" *ngIf="!userState"style="font-size:24px;">App Name  </a>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul id="navComponents"class="nav navbar-nav">
@@ -16,7 +17,7 @@
         <li style="border-right: solid 1px rgb(150,150,150);"><a [routerLink]="['calendar']"><span class="glyphicon glyphicon-calendar"></span> Calendar</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li id="loginButton"><a [routerLink]="['login']">Login/Sign Up</a></li>
+        <li id="loginButton"><a [routerLink]="['login']">Login / Sign Up</a></li>
         <li id="userButton" class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span>  {{(user | async)?.email }} <span class="caret"></span></a>
           <ul class="dropdown-menu">
