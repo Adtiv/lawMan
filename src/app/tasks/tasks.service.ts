@@ -12,6 +12,7 @@ export class TasksService implements OnInit{
     tasks: FirebaseListObservable<any[]>;
     filteredTask: FirebaseObjectObservable<any[]>;
     filteredTasks: FirebaseListObservable<any[]>;
+    customTaskTypes: FirebaseListObservable<any[]>;
     af: AngularFire;
     taskKey;
     userService: UserService;
@@ -24,7 +25,7 @@ export class TasksService implements OnInit{
     clientKey;
     clientName;
     differenceInHours;
-    constructor(af: AngularFire,userService: UserService,clientService:ClientService){
+    constructor(af: AngularFire,userService:UserService,clientService:ClientService){
       this.af=af;
       this.userService=userService;
       this.clientService=clientService;
@@ -34,6 +35,7 @@ export class TasksService implements OnInit{
             this.userId=this.userService.uid;
             this.setTasks();
             this.setClients();
+            this.setTaskTypes();
           }
         else{
           this.tasks=null;
@@ -46,6 +48,9 @@ export class TasksService implements OnInit{
       this.startAtVal=0;
       this.endAtVal=1000;
       this.taskFilter="none";
+    }
+    setTaskTypes(){
+      this.customTaskTypes=this.af.database.list("users/"+this.userService.uid+"/types");
     }
     setClients(){
       this.clients=this.clientService.getClients();
@@ -260,6 +265,12 @@ export class TasksService implements OnInit{
         this.startAtVal=0;
         this.endAtVal=2;
       }
+    }
+    addTaskType(type){
+      this.af.database.list("users/"+this.userService.uid+"/types").push({type});
+    }
+    removeTaskType(type){
+      this.af.database.object("users/"+this.userService.uid+"/types/"+type.$key).remove();
     }
     addTask(title, description, dueDate,taskType,daysTillDue,client,dueTime,differenceInHours){
       console.log(title+"   "+description+" "+dueDate+" " + taskType);

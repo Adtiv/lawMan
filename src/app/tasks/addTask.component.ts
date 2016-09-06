@@ -23,6 +23,7 @@ export class AddTaskComponent implements OnInit {
   taskService: TasksService;
   types = ['Motion Response', 'Mediation Statement',
             'Discovery Response', 'Pleading Response', 'Other'];
+  taskTypes;
   clients;
   client;
   title;
@@ -31,15 +32,18 @@ export class AddTaskComponent implements OnInit {
   date;
   taskType;
   dueTime = '12:00:AM';
-  public isCollapsed:boolean;
+  isCollapsed:boolean;
   typeFilled:boolean;
   titleFilled:boolean;
+  editTypes:boolean;
+  newType:string;
   constructor(taskService: TasksService, af:AngularFire) {
   	this.taskService=taskService;
     this.client="";
     this.taskService.userService.af.auth.subscribe((auth)=>{
       if(auth!=null){
         this.clients = this.taskService.clients;
+        this.taskTypes = this.taskService.customTaskTypes;
         //this.client.updateValue(this.client.type);
       }
       else{
@@ -53,6 +57,8 @@ export class AddTaskComponent implements OnInit {
   }
   ngOnInit() {
     this.isCollapsed = true;
+    this.editTypes = true;
+    this.newType="";
     //this.clients = this.taskService.clients;
   }
   /*
@@ -70,11 +76,14 @@ export class AddTaskComponent implements OnInit {
     }
   }
   keyType(event:any){
-    console.log(event);
+    //console.log(event);
     this.typeFilled=true;
   }
+  openTypes(){
+    this.editTypes=!this.editTypes;
+  }
   keyTime(event:any){
-    console.log(event);
+    //console.log(event);
   }
   formatDate(date){
   	var formattedDate="";
@@ -104,7 +113,7 @@ export class AddTaskComponent implements OnInit {
     var differenceInDays = futureDate.diff(currentDate, 'days');
     var currentHour = moment(new Date());
     var hourDue;
-    console.log(this.dueTime.substring(6,8));
+    //console.log(this.dueTime.substring(6,8));
     if(this.dueTime.substring(6,8)=='AM'){
       hourDue=moment(this.dueTime, 'hh:mm: A');
     }
@@ -128,5 +137,14 @@ export class AddTaskComponent implements OnInit {
   setClient(){
     //this.client=client;
     console.log(this.client);
+  }
+  addTaskType(){
+    if(this.newType!=""){
+      this.taskService.addTaskType(this.newType);
+      this.newType="";
+    }
+  }
+  removeTaskType(type){
+    this.taskService.removeTaskType(type);
   }
 }

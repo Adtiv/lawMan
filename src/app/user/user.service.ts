@@ -17,6 +17,7 @@ export class UserService implements OnInit{
     lName;
     userEmail;
     loginStatus:string;
+    signUpStatus:string;
     constructor(af: AngularFire) {
     	this.af = af;
         //this.getCurrentUser();
@@ -40,6 +41,7 @@ export class UserService implements OnInit{
     ngOnInit(){
         this.newUser=false;
         this.loginStatus="";
+        this.signUpStatus="";
     }
     setUser(){
         this.user = this.af.database.object('users/'+this.uid);
@@ -64,7 +66,14 @@ export class UserService implements OnInit{
         //this.userTasks.push({postId});
     }
     createUser(email, password, fName, lName){
-        this.af.auth.createUser({ email: email, password: password });
+        this.af.auth.createUser({ email: email, password: password }).then((success) => {
+          //console.log("Firebase success: " + JSON.stringify(success));
+          this.signUpStatus = "success";
+        })
+        .catch((error) => {
+          //console.log("Firebase failure: " + JSON.stringify(error.message));
+          this.signUpStatus = JSON.stringify(error.message);
+        });
         this.email=email;
         this.fName=fName;
         this.lName=lName;

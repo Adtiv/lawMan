@@ -26,12 +26,30 @@
           <input type="text"name="title"id="taskTitle" class="form-control" placeholder="Title" (keyup)="keyTitle($event)"[(ngModel)]="title"required>
           <label class="control-label" for="description">Description:</label>
           <input type="text"  name="description"id="taskDescription" class="form-control" placeholder="Description" [(ngModel)]="description"required>
-          <label class="control-label" for="taskType">Task Type:<span style="color:red; font-weight:normal" *ngIf="!typeFilled"> *</span> <span class="glyphicon glyphicon-ok"style="color:green; font-weight:normal" *ngIf="typeFilled"></span></label>
+          <label class="control-label" for="taskType">Task Type:<span style="color:red; font-weight:normal" *ngIf="!typeFilled"> *</span><span class="glyphicon glyphicon-ok"style="color:green; font-weight:normal" *ngIf="typeFilled"></span></label><a *ngIf="editTypes"class="btn glyphicon glyphicon-edit" style="float:right" (click)="openTypes()"></a>
           <select (change)="keyType($event)"class="form-control" id="taskType"required
             [(ngModel)]="taskType"
               name="taskType">
             <option *ngFor="let t of types" [value]="t">{{t}}</option>
           </select>
+          <div [collapse]="editTypes" class="editTypes">
+          <p style="text-align:center;font-weight:bold;">Task Categories:<a class="btn glyphicon glyphicon-minus" style="float:right;" (click)="openTypes()"></a></p>
+          <hr>
+          <p *ngFor="let taskType of taskTypes | async" class="taskType">{{taskType.type}}<a class="btn glyphicon glyphicon-remove" style="color:red;" (click)="removeTaskType(taskType);"></a>
+          <!--<span *ngIf="taskType==null">
+            Create custom task filters
+          </span>-->
+          </p>
+          <hr>
+          <div class="col-lg-6">
+            <div class="input-group">
+              <input type="text" name="newType"class="form-control" [(ngModel)]="newType">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" (click)="addTaskType()">Add</button>
+              </span>
+            </div><!-- /input-group -->
+          </div><!-- /.col-lg-6 -->
+          </div>
           <label class="control-label" for="client">Client:</label>
           <select class="form-control"
             [(ngModel)]="client"

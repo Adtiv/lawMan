@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
   login;
   signUp;
   loginStatus;
+  signUpStatus;
   constructor(UserService: UserService, router:Router) {
   	this.UserService = UserService;
     this.router = router;
@@ -35,6 +36,7 @@ export class LoginComponent implements OnInit {
     this.login=true;
     document.getElementById('clickModal').click();
     this.loginStatus="";
+    this.signUpStatus="";
   }
   navLanding(){
     this.router.navigateByUrl('landingPage');
@@ -57,7 +59,17 @@ export class LoginComponent implements OnInit {
   }
   onSignUp(){
   	this.UserService.createUser(this.model.email,this.password,this.model.fName,this.model.lName);
+        setTimeout(() => this.signUpCheck(),500);
+  }
+  signUpCheck(){
+    this.signUpStatus=this.UserService.signUpStatus;
+    console.log("status"+this.signUpStatus);
+    if(this.signUpStatus=="success"){
+      document.getElementById('closeModal').click();
+      this.model.email="";
+    }
     //this.router.navigateByUrl('tasks');
+    this.password="";    
   }
   onLogin(){
   	this.UserService.loginUser(this.loginEmail,this.loginPassword);

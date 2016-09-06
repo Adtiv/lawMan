@@ -1,7 +1,7 @@
 .navbar{
 	font-family: "PT Serif", Times, serif;
 	font-size:16px;
-	background-color: rgba(230,230,230,.9);
+	background-color: rgba(230,230,240,.9);
 	border-bottom: 2px solid rgb(150,150,150);
 }
 .navbar-default .navbar-nav > li > a {

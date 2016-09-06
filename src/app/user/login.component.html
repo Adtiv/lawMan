@@ -39,6 +39,9 @@
 	          <input type="text" name="emailSignup" id="emailSignup" class="form-control" placeholder="Email" [(ngModel)]="model.email"required>
 	          <label class="control-label" for="pass">Password:</label>
 	          <input type="password" name="pass" id="pass" class="form-control" placeholder="Password" [(ngModel)]="password"required>
+	          <span style="color:red;" *ngIf="signUpStatus!='success' || signUpStatus!=''">
+                {{signUpStatus}}
+              </span>
 	        </div><br>
 	        <div class="form-group" style="text-align:center;">
 	          <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
