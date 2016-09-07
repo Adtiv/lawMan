@@ -32,11 +32,11 @@ export class TaskListComponent implements OnInit {
   	edit;
   	types = ['Motion Response', 'Mediation Statement',
             'Discovery Response', 'Pleading Response', 'Other']
+    taskTypes;
   	title;
   	description;
   	dueDate;
   	dueTime;
-  	//currentDate: Date = new Date();
   	date;
   	taskType;
   	oldType;
@@ -44,6 +44,8 @@ export class TaskListComponent implements OnInit {
   	af;
   	userService:UserService
   	past:boolean;
+	editTypes:boolean;
+	newType:string;
 	constructor(public auth: FirebaseAuth,af: AngularFire,taskService: TasksService, userService:UserService){
 		this.taskService = taskService;
 		this.af=af;
@@ -52,6 +54,7 @@ export class TaskListComponent implements OnInit {
 	ngOnInit() {
 		this.isCollapsed = true;
 		//this.client="";
+		this.editTypes = true;
 		this.edit=true;
   	    this.filterButtonText="All Tasks";
   	    this.past=false;
@@ -59,6 +62,8 @@ export class TaskListComponent implements OnInit {
   	    	if(data){
 				this.tasks =this.taskService.getTasks('none');
 				this.clients = this.taskService.clients;
+        		this.taskTypes = this.taskService.customTaskTypes;
+        		//this.taskType="Business Finance";
   	    	}
   	    })
 		console.log(this.tasks);
@@ -66,12 +71,28 @@ export class TaskListComponent implements OnInit {
   	toggled(open:boolean):void {
     	console.log('Dropdown is now: ', open);
   	}
+  	openTypes(){
+  		this.editTypes=!this.editTypes;
+  	}
+    addTaskType(){
+      if(this.newType!=""){
+        this.taskService.addTaskType(this.newType);
+        this.newType="";
+      }
+    }
+    removeTaskType(type){
+      this.taskService.removeTaskType(type);
+    }
 	filterTasks(filter){
 		this.past=false;
 		if(filter=="none"){
   	      this.filterButtonText="All Tasks";
 		}
-		else if(filter=="motion"){
+		else{
+		  this.filterButtonText=filter;
+		}
+		/*
+		if(filter=="motion"){
   	      this.filterButtonText="Motion Responses";
 		}
 		if(filter=="pleading"){
@@ -86,6 +107,7 @@ export class TaskListComponent implements OnInit {
 		if(filter=="other"){
   	      this.filterButtonText="Other";
 		}
+		*/
 	    this.tasks = this.taskService.getTasks(filter);
 		return false;
 	}
@@ -159,7 +181,7 @@ export class TaskListComponent implements OnInit {
 		  this.af.database.list('taskClients/'+this.updatedTaskKey).subscribe(snapshots => {
 	        snapshots.forEach(snapshot => {
 			  console.log(snapshot.$key);	        	
-	          this.client = this.af.database.object('clients/'+this.userService.uid+'/'+snapshot.$key);
+	          this.client = this.af.database.object('clients/'+this.userService.uid+'/'+snapshot.$key).client;
 	        }); 
 	      })
 		  this.client.subscribe((editClient)=>{

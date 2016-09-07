@@ -25,6 +25,7 @@ export class TasksService implements OnInit{
     clientKey;
     clientName;
     differenceInHours;
+    typeCount;
     constructor(af: AngularFire,userService:UserService,clientService:ClientService){
       this.af=af;
       this.userService=userService;
@@ -51,6 +52,13 @@ export class TasksService implements OnInit{
     }
     setTaskTypes(){
       this.customTaskTypes=this.af.database.list("users/"+this.userService.uid+"/types");
+      var typeCount=0;
+      this.af.database.list("users/"+this.userService.uid+"/types").subscribe(types=>{
+        types.forEach(type=>{
+          typeCount++;
+        })
+      })
+      this.typeCount=typeCount;
     }
     setClients(){
       this.clients=this.clientService.getClients();
@@ -95,7 +103,7 @@ export class TasksService implements OnInit{
       console.log(differenceInHours);
       this.task=this.af.database.object('tasks/'+this.userId+'/'+task.$key);
       this.task.update({hoursTillDue:differenceInHours});
-      this.filteredTask=this.af.database.object('tasks/'+task.taskType+'/'+this.userId+'/'+task.$key);
+      this.filteredTask=this.af.database.object('customTaskFilters/'+this.userId+'/'+task.taskType+'/'+task.$key);
       this.filteredTask.update({hoursTillDue:differenceInHours});
     }
     deletePastTasks(){
@@ -110,6 +118,7 @@ export class TasksService implements OnInit{
         snapshots.forEach(snapshot=>{
           this.af.database.object('tasks/'+this.userId+'/'+snapshot.$key).remove();
           this.af.database.object('tasks/'+snapshot.taskType+'/'+this.userId+'/'+snapshot.$key).remove();
+          this.af.database.object('customTaskFilters/'+this.userId+'/'+snapshot.taskType+'/'+snapshot.$key);
           this.af.database.list('taskClients/'+snapshot.$key).subscribe(snapshots => {
             snapshots.forEach(snap => {
               this.af.database.object('clientTasks/'+snap.$key+'/'+snapshot.$key).remove();
@@ -142,11 +151,13 @@ export class TasksService implements OnInit{
       differenceInHours=differenceInHours.substring(0,4);
       console.log(differenceInHours);
       */
-      this.task=this.af.database.object('tasks/'+this.userId+'/'+task.$key);
-      this.filteredTask=this.af.database.object('tasks/'+task.taskType+'/'+this.userId+'/'+task.$key);
+      this.task=this.af.database.object('tasks/'+this.userId+'/'+task.$key)
+      this.filteredTask=this.af.database.object('customTaskFilters/'+this.userId+'/'+task.taskType+'/'+task.$key);
       if(differenceInDays>=-30){
         this.task.update({daysTillDue:differenceInDays});
-        this.filteredTask.update({daysTillDue:differenceInDays});
+        if(task.taskType!=""){
+          this.filteredTask.update({daysTillDue:differenceInDays});
+        }
         this.af.database.list('taskClients/'+task.$key).subscribe(snapshots => {
           snapshots.forEach(snapshot => {
             this.af.database.object('clientTasks/'+snapshot.$key+'/'+task.$key).update({days:differenceInDays});
@@ -195,6 +206,17 @@ export class TasksService implements OnInit{
           });
           return this.tasks;
         }
+        else{
+          this.filteredTasks = this.af.database.list('customTaskFilters/'+this.userId+'/'+filter,{
+            query: {
+              orderByChild: 'daysTillDue',
+              startAt:this.startAtVal,
+              endAt:this.endAtVal
+            }
+          });
+          return this.filteredTasks;
+        }
+        /*
         else if(this.taskFilter=='discovery'){
           this.filteredTasks = this.af.database.list('tasks/Discovery Response/'+this.userId,{
             query: {
@@ -245,6 +267,7 @@ export class TasksService implements OnInit{
           });
           return this.filteredTasks;
         }
+        */
       }
     }
     filterByColor(color){
@@ -268,15 +291,25 @@ export class TasksService implements OnInit{
     }
     addTaskType(type){
       this.af.database.list("users/"+this.userService.uid+"/types").push({type});
+      this.setTaskTypes();
     }
-    removeTaskType(type){
-      this.af.database.object("users/"+this.userService.uid+"/types/"+type.$key).remove();
+    removeTaskType(types){
+      this.af.database.object("users/"+this.userService.uid+"/types/"+types.$key).remove();
+      this.af.database.list('customTaskFilters/'+this.userService.uid+'/'+types.type).remove();
+      this.af.database.list('tasks/'+this.userId).subscribe(snapshots => {
+        snapshots.forEach(snapshot => {
+           if(snapshot.taskType==types.type){
+             this.af.database.object('tasks/'+this.userId+'/'+snapshot.$key).update({taskType:""});
+           }
+        });  
+      })
+      this.setTaskTypes();
     }
     addTask(title, description, dueDate,taskType,daysTillDue,client,dueTime,differenceInHours){
       console.log(title+"   "+description+" "+dueDate+" " + taskType);
       this.tasks=this.af.database.list('tasks/'+this.userService.uid);
       this.taskKey = this.tasks.push({uid:this.userService.uid,title:title,description:description,dueDate:dueDate,dueTime:dueTime,taskType:taskType,daysTillDue:daysTillDue,hoursTillDue:differenceInHours}).key;
-      this.filteredTask=this.af.database.object('tasks/'+taskType+'/'+this.userService.uid+'/'+this.taskKey);
+      this.filteredTask=this.af.database.object('customTaskFilters/'+this.userService.uid+'/'+taskType+'/'+this.taskKey);
       this.filteredTask.set({uid:this.userService.uid,title:title,description:description,dueDate:dueDate,dueTime:dueTime,taskType:taskType,daysTillDue:daysTillDue,hoursTillDue:differenceInHours});
       if(client!=""){
         this.parseClient(client);
@@ -300,10 +333,10 @@ export class TasksService implements OnInit{
       this.task=this.af.database.object('tasks/'+this.userService.uid+'/'+taskKey);
       this.task.update({uid:this.userService.uid,title:title,description:description,dueDate:dueDate,taskType:taskType,daysTillDue:daysTillDue,dueTime:dueTime});
       if(oldType!=taskType){
-        this.filteredTask=this.af.database.object('tasks/'+oldType+'/'+this.userService.uid+'/'+taskKey);
+        this.filteredTask=this.af.database.object('customTaskFilters/'+this.userId+'/'+oldType+'/'+taskKey);
         this.filteredTask.remove();
       }
-      this.filteredTask=this.af.database.object('tasks/'+taskType+'/'+this.userService.uid+'/'+taskKey);        
+      this.filteredTask=this.af.database.object('customTaskFilters/'+this.userId+'/'+taskType+'/'+taskKey);
       this.filteredTask.update({uid:this.userService.uid,title:title,description:description,dueDate:dueDate,taskType:taskType,daysTillDue:daysTillDue,dueTime:dueTime});
       this.af.database.list('taskClients/'+taskKey).subscribe(snapshots => {
         snapshots.forEach(snapshot => {
@@ -313,8 +346,8 @@ export class TasksService implements OnInit{
     }
     deleteTask(taskKey,taskType){
       this.tasks=this.af.database.list('tasks/'+this.userService.uid);
-      this.filteredTasks = this.af.database.list('tasks/'+taskType+'/'+this.userService.uid);
-      this.filteredTasks.remove(taskKey);
+      this.filteredTask=this.af.database.object('customTaskFilters/'+this.userId+'/'+taskType+'/'+taskKey);
+      this.filteredTask.remove();
       this.tasks.remove(taskKey);
       this.af.database.list('taskClients/'+taskKey).subscribe(snapshots => {
         snapshots.forEach(snapshot => {

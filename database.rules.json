@@ -5,11 +5,20 @@
       ".write":true
     },
     "tasks":{
-	  ".read":true,
+	    ".read":true,
       ".write":true,
       "$task":{
         ".indexOn":"daysTillDue",
         "$statementTasks":{
+          ".indexOn":"daysTillDue"
+        }
+      }
+    },
+    "customTaskFilters":{
+      ".read":true,
+      ".write":true,
+      "$user":{
+        "$customFilters":{
           ".indexOn":"daysTillDue"
         }
       }

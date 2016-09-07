@@ -30,25 +30,28 @@
           <select (change)="keyType($event)"class="form-control" id="taskType"required
             [(ngModel)]="taskType"
               name="taskType">
-            <option *ngFor="let t of types" [value]="t">{{t}}</option>
+            <option *ngFor="let t of taskTypes | async" [value]="t.type">{{t.type}}</option>
           </select>
           <div [collapse]="editTypes" class="editTypes">
-          <p style="text-align:center;font-weight:bold;">Task Categories:<a class="btn glyphicon glyphicon-minus" style="float:right;" (click)="openTypes()"></a></p>
-          <hr>
-          <p *ngFor="let taskType of taskTypes | async" class="taskType">{{taskType.type}}<a class="btn glyphicon glyphicon-remove" style="color:red;" (click)="removeTaskType(taskType);"></a>
-          <!--<span *ngIf="taskType==null">
-            Create custom task filters
-          </span>-->
-          </p>
-          <hr>
-          <div class="col-lg-6">
-            <div class="input-group">
-              <input type="text" name="newType"class="form-control" [(ngModel)]="newType">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button" (click)="addTaskType()">Add</button>
-              </span>
-            </div><!-- /input-group -->
-          </div><!-- /.col-lg-6 -->
+            <p style="text-align:center;font-weight:bold;">Task Categories:<a class="btn glyphicon glyphicon-minus" style="float:right;" (click)="openTypes()"></a></p>
+            <hr>
+            <div style="text-align:center"><p *ngIf="taskService.typeCount==0"><i>Add custom task types to filter your tasks by category!</i></p></div>
+            <p *ngFor="let taskType of taskTypes | async" class="taskType">{{taskType.type}}<a class="btn glyphicon glyphicon-remove" style="color:red;" (click)="removeTaskType(taskType);"></a>
+            <!--<span *ngIf="taskType==null">
+              Create custom task filters
+            </span>-->
+            </p>
+            <hr>
+            <div style="text-align:center;width:100%">          
+            <div style="margin-left:20%;margin-right:20%;">
+              <div class="input-group">
+                <input type="text" name="newType"class="form-control" [(ngModel)]="newType">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button" (click)="addTaskType()">Add</button>
+                </span>
+              </div>
+            </div>
+            </div>
           </div>
           <label class="control-label" for="client">Client:</label>
           <select class="form-control"

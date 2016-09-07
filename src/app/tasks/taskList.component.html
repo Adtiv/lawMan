@@ -15,12 +15,33 @@
                   <input type="text"name="title"id="taskTitle" class="form-control" placeholder="Title" [(ngModel)]="title"required>
                   <label class="control-label" for="description">Description:</label>
                   <input type="text"name="description"id="taskDescription" class="form-control" placeholder="Description" [(ngModel)]="description"required>
-                  <label class="control-label" for="taskType">Task Type:</label>
+                  <label class="control-label" for="taskType">Task Type:</label><a *ngIf="editTypes"class="btn glyphicon glyphicon-edit" style="float:right" (click)="openTypes()"></a>
                   <select class="form-control" id="taskType"required
                     [(ngModel)]="taskType"
                       name="taskType">
-                    <option *ngFor="let t of types" [value]="t">{{t}}</option>
+                    <option *ngFor="let t of taskTypes | async" [value]="t.type">{{t.type}}</option>
                   </select>
+                  <div [collapse]="editTypes" class="editTypes">
+                    <p style="text-align:center;font-weight:bold;">Task Categories:<a class="btn glyphicon glyphicon-minus" style="float:right;" (click)="openTypes()"></a></p>
+                    <hr>
+                    <div style="text-align:center"><p *ngIf="taskService.typeCount==0"><i>Add custom task types to filter your tasks by category!</i></p></div>
+                    <p *ngFor="let taskType of taskTypes | async" class="taskType">{{taskType.type}}<a class="btn glyphicon glyphicon-remove" style="color:red;" (click)="removeTaskType(taskType);"></a>
+                    <!--<span *ngIf="taskType==null">
+                      Create custom task filters
+                    </span>-->
+                    </p>
+                    <hr>
+                    <div style="text-align:center;width:100%">          
+                    <div style="margin-left:20%;margin-right:20%;">
+                      <div class="input-group">
+                        <input type="text" name="newType"class="form-control" [(ngModel)]="newType">
+                        <span class="input-group-btn">
+                          <button class="btn btn-default" type="button" (click)="addTaskType()">Add</button>
+                        </span>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
                   <label class="control-label" for="client">Client:</label>
                   <select class="form-control"
                     [(ngModel)]="client"
@@ -51,8 +72,10 @@
             {{filterButtonText}} <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
-            <li role="menuitem"><a class="dropdown-item" href="#" (click)='filterTasks("none")'>All Tasks</a></li>
-            <li class="divider dropdown-divider"></li> 
+            <div style="text-align:center;">
+              <li role="menuitem"><a class="dropdown-item" href="#" (click)='filterTasks("none")' style="color:black;">All Tasks</a></li>
+            </div>
+            <!--
             <li role="menuitem"><a class="dropdown-item" href="#" (click)='filterTasks("motion")'>Motion Responses</a></li>
             <li class="divider dropdown-divider"></li>
             <li role="menuitem"><a class="dropdown-item" href="#" (click)='filterTasks("discovery")'>Discovery Responses</a></li>
@@ -62,6 +85,11 @@
             <li role="menuitem"><a class="dropdown-item" href="#" (click)='filterTasks("mediation")'>Mediation Statements</a></li>
             <li class="divider dropdown-divider"></li>
             <li role="menuitem"><a class="dropdown-item" href="#" (click)='filterTasks("other")'>Other</a></li>
+            -->
+            <div *ngFor="let t of taskTypes | async" style="text-align:center;">
+              <li class="divider dropdown-divider"></li>
+              <li role="menuitem"><a class="dropdown-item" href="#" (click)='filterTasks(t.type)' style="color:black;">{{t.type}}</a></li>  
+            </div>
           </ul>
         </div><br><br>
         <div class="btn-group">
@@ -83,6 +111,7 @@
   	  <small class="list-group-item-text">
           <span *ngIf="task.daysTillDue!=0"style="float:right;"><b>{{task.daysTillDue}}</b> <span *ngIf="task.daysTillDue!=1">days</span><span *ngIf="task.daysTillDue==1">day</span></span>
           <span *ngIf="task.daysTillDue==0"style="float:right;">Due at: <b>{{task.dueTime}}</b></span>
+          <br *ngIf="task.taskType==''">
         <!--
           <span *ngIf="task.daysTillDue==0 && task.hoursTillDue<0"style="float:right;"><b>{{task.hoursTillDue.substring(0,3)}}</b> <span *ngIf="task.hoursTillDue!=1">hours </span><span *ngIf="task.hoursTillDue==1">hour </span><span>{{task.hoursTillDue.substring(3,task.hoursTillDue.length)*60}} minutes</span></span>
           

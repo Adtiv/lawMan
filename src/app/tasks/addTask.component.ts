@@ -125,6 +125,7 @@ export class AddTaskComponent implements OnInit {
     var differenceInHours = duration.asHours().toString();
     console.log(currentDate+"    "+futureDate+"   "+differenceInDays);
     console.log(this.dueTime + "   " +differenceInHours);
+    console.log(this.taskType)
     this.taskService.addTask(this.title,this.description,this.date,this.taskType,differenceInDays,this.client,this.dueTime,differenceInHours);
     this.isCollapsed=!this.isCollapsed;
     this.title="";

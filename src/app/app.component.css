@@ -3,6 +3,7 @@
 	font-size:16px;
 	background-color: rgba(230,230,240,.9);
 	border-bottom: 2px solid rgb(150,150,150);
+	/*box-shadow: 1px 1px 2px rgb(230,230,230);*/
 }
 .navbar-default .navbar-nav > li > a {
    color: rgb(50,50,50); /*Change active text color here*/
