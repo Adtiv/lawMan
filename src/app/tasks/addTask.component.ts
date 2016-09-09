@@ -37,6 +37,7 @@ export class AddTaskComponent implements OnInit {
   titleFilled:boolean;
   editTypes:boolean;
   newType:string;
+  categoryText:boolean;
   constructor(taskService: TasksService, af:AngularFire) {
   	this.taskService=taskService;
     this.client="";
@@ -57,6 +58,7 @@ export class AddTaskComponent implements OnInit {
   }
   ngOnInit() {
     this.isCollapsed = true;
+    this.categoryText=false;
     this.editTypes = true;
     this.newType="";
     //this.clients = this.taskService.clients;
@@ -75,12 +77,21 @@ export class AddTaskComponent implements OnInit {
       this.titleFilled=false;
     }
   }
+  typeTextToggle(state){
+    if(state=="enter"){
+      this.categoryText=true;
+    }
+    else{
+      this.categoryText=false;
+    }
+  }
   keyType(event:any){
     //console.log(event);
     this.typeFilled=true;
   }
   openTypes(){
     this.editTypes=!this.editTypes;
+    this.categoryText=false;
   }
   keyTime(event:any){
     //console.log(event);

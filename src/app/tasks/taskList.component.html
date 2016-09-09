@@ -15,7 +15,8 @@
                   <input type="text"name="title"id="taskTitle" class="form-control" placeholder="Title" [(ngModel)]="title"required>
                   <label class="control-label" for="description">Description:</label>
                   <input type="text"name="description"id="taskDescription" class="form-control" placeholder="Description" [(ngModel)]="description"required>
-                  <label class="control-label" for="taskType">Task Type:</label><a *ngIf="editTypes"class="btn glyphicon glyphicon-edit" style="float:right" (click)="openTypes()"></a>
+                  <label class="control-label" for="taskType">Task Type:</label>
+                  <a *ngIf="editTypes"class="btn glyphicon glyphicon-edit" style="float:right" on-mouseover="typeTextToggle('enter')" on-mouseleave="typeTextToggle('leave')"(click)="openTypes()"></a><span style="color:green;float:right;" *ngIf="categoryText">Edit task types</span>
                   <select class="form-control" id="taskType"required
                     [(ngModel)]="taskType"
                       name="taskType">

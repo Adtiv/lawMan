@@ -86,6 +86,7 @@ export class UserService implements OnInit{
         this.email="";
         this.fName="";
         this.lName="";
+        this.loginStatus = "";
         //location.reload();
     }
     loginUser(email, password){

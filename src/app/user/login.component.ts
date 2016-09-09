@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
   }
   onSignUp(){
   	this.UserService.createUser(this.model.email,this.password,this.model.fName,this.model.lName);
-        setTimeout(() => this.signUpCheck(),500);
+        setTimeout(() => this.signUpCheck(),800);
   }
   signUpCheck(){
     this.signUpStatus=this.UserService.signUpStatus;
@@ -73,7 +73,7 @@ export class LoginComponent implements OnInit {
   }
   onLogin(){
   	this.UserService.loginUser(this.loginEmail,this.loginPassword);
-        setTimeout(() => this.loginCheck(),500);
+        setTimeout(() => this.loginCheck(),800);
   }
   loginCheck(){
     this.loginStatus=this.UserService.loginStatus;

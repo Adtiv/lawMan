@@ -46,12 +46,14 @@ export class TaskListComponent implements OnInit {
   	past:boolean;
 	editTypes:boolean;
 	newType:string;
+	categoryText:boolean;
 	constructor(public auth: FirebaseAuth,af: AngularFire,taskService: TasksService, userService:UserService){
 		this.taskService = taskService;
 		this.af=af;
 		this.userService=userService;
 	}
 	ngOnInit() {
+		this.categoryText = false;
 		this.isCollapsed = true;
 		//this.client="";
 		this.editTypes = true;
@@ -73,11 +75,20 @@ export class TaskListComponent implements OnInit {
   	}
   	openTypes(){
   		this.editTypes=!this.editTypes;
+  		this.categoryText=false;
   	}
     addTaskType(){
       if(this.newType!=""){
         this.taskService.addTaskType(this.newType);
         this.newType="";
+      }
+    }
+    typeTextToggle(state){
+      if(state=="enter"){
+        this.categoryText=true;
+      }
+      else{
+        this.categoryText=false;
       }
     }
     removeTaskType(type){
